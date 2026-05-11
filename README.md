@@ -10,9 +10,11 @@ This folder is a **complete starter** for the EMU430 team website: **Home**, **D
 
 **Course list:** the final deliverable PDF listed **fixed GitHub team names** (e.g. `team_petra`, `rhapsody`, …). If your instructor assigned you to one of those names, use that name for the **GitHub Classroom team / repo**, and keep **“Paw Patrol”** as your **project title** on the site. If the instructor approved **Paw Patrol** as the official team name, you are fine using it everywhere.
 
-## GitHub account **pawpatrol**
+## GitHub account **pawpatrol** / repo **`simply-scheme`**
 
-`_quarto.yml` is set for **`https://github.com/pawpatrol/emu430`** and project Pages **`https://pawpatrol.github.io/emu430/`**. (Earlier docs used a typo **`pawpxtrol`** — your profile is **`pawpatrol`**.) If Classroom uses another repo name, edit **both** URLs in `_quarto.yml`.
+`_quarto.yml` is set for **`https://github.com/pawpatrol/simply-scheme`** and Pages **`https://pawpatrol.github.io/simply-scheme/`**. Your **local folder** can still be named `emu430` on disk; only the **GitHub repo name** matters for the remote and URLs.
+
+**Heads-up:** `simply-scheme` already exists with older content. The first push of this project may require merging histories or a **force push** (which **overwrites** the old default branch). Back up anything you still need from that repo before replacing it.
 
 Teammates add their **Assignment 1** profile links in `index.qmd`; they do not need to own the repo.
 
@@ -20,15 +22,15 @@ Teammates add their **Assignment 1** profile links in `index.qmd`; they do not n
 
 1. Sign up at [github.com/signup](https://github.com/signup) if you still need an individual account.
 2. **Username:** letters, numbers, hyphens — **no spaces**. Display name can stay **Paw Patrol** in [Profile settings](https://github.com/settings/profile).
-3. Create repo **`emu430`** on GitHub under **`pawpatrol`** (green **New** on your profile) if it does not exist yet — empty, no README is fine.
-4. Push this project to **`github.com/pawpatrol/emu430`** and enable **Pages** from **`gh-pages`** after the first successful workflow run.
+3. Remote target is **`github.com/pawpatrol/simply-scheme`** (existing repo).
+4. Push from Terminal (see below), then enable **Pages** from **`gh-pages`** after the first successful workflow run.
 
 ## What you must provide (fill-in checklist)
 
 | Item | Where to put it |
 |------|------------------|
 | **Official data URL** + access date + attribution | `data.qmd` (“Source and citation”) |
-| **Team / repo URLs** | Set for **`pawpatrol/emu430`** in `_quarto.yml` — change only if your repo slug differs |
+| **Team / repo URLs** | **`pawpatrol/simply-scheme`** in `_quarto.yml` (live site: `pawpatrol.github.io/simply-scheme`) |
 | **All member names** + **GitHub profile URLs** (Assignment 1) | `index.qmd` team table |
 | **Course personal page** | Link from your EMU430 menu page **to** this published site |
 | **AI use** (if any) | Mark sections + footnote with prompt (course rule) on any page you used AI for wording |
@@ -42,7 +44,15 @@ Cursor sets **`GIT_ASKPASS`** to an internal helper; it often breaks **`git push
 
 **Do this:**
 
-1. Ensure the repo exists: while logged in as **pawpatrol**, open [github.com/new](https://github.com/new), name **`emu430`**, public, **no** README — **Create repository**.
+1. Remote must be **`pawpatrol/simply-scheme`**. Set it once:
+
+   ```bash
+   cd /Users/talyat/Documents/mateo_project/emu430
+   git remote set-url origin git@github.com:pawpatrol/simply-scheme.git
+   ```
+
+   If the old repo has a different history, either merge (`git pull origin main --allow-unrelated-histories` then resolve) or **force** (destructive): `git push -u origin main --force` — only after backing up the old repo.
+
 2. Open **Terminal.app** (Apple’s Terminal, not Cursor’s tab).
 3. Run:
 
@@ -57,7 +67,7 @@ Cursor sets **`GIT_ASKPASS`** to an internal helper; it often breaks **`git push
 4. If Git still asks for a password: GitHub no longer accepts account passwords over HTTPS. Use a **[Personal Access Token](https://github.com/settings/tokens)** as the password, or switch to SSH:
 
    ```bash
-   git remote set-url origin git@github.com:pawpatrol/emu430.git
+   git remote set-url origin git@github.com:pawpatrol/simply-scheme.git
    ssh -T git@github.com    # must say “Hi pawpatrol!”
    ./scripts/git-push-terminal.sh
    ```

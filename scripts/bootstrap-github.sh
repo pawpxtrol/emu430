@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Run from repo root after: gh auth login
-# Creates github.com/pawpatrol/emu430 if missing, then pushes main.
+# Creates github.com/pawpatrol/simply-scheme if missing, then pushes main.
 
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 ORG="pawpatrol"
-REPO="emu430"
+REPO="simply-scheme"
 FULL="${ORG}/${REPO}"
 
 if ! command -v gh >/dev/null 2>&1; then
