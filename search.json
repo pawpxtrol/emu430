@@ -60,126 +60,147 @@
     "href": "data.html",
     "title": "Data",
     "section": "",
-    "text": "The workbook hayvan_besleme_2024_07.xlsx contains July 2024 records of street animal feeding (hayvan besleme) associated with the Ankara Provincial Health Directorate animal-feeding reporting (Turkish: Ankara İl Sağlık Müdürlüğü, Sağlık Dairesi / ilçe sağlık operations — replace this sentence with the exact portal or announcement URL you used).\nWhy we chose it: It is real, public operational data, Turkey-relevant, large enough for EDA (367 rows), and it connects to urban policy and animal welfare logistics.\nObjectives (data-focused): Publish a fully reproducible import and cleaning pipeline; distribute a single cleaned object feeding as feeding_clean.RData."
+    "text": "This site analyzes monthly street-animal feeding (hayvan besleme) records from the Ankara Provincial Health Directorate (Turkish: Ankara İl Sağlık Müdürlüğü, Sağlık Dairesi). Each row is one neighborhood-day of operations across Ankara’s districts (ilçeler).\nWe combined eleven monthly Excel workbooks spanning July 2024 through June 2025 into a single tidy dataset:\n\n2024: July, September, October, November, December\n2025: January, February, March, April, May, June\n\nWhy we chose it: real, public operational data; Turkey-relevant; large enough for time-series and cross-district EDA; and it touches urban policy and animal welfare logistics — a topic with current public-discourse relevance.\nObjectives (data-focused):\n\nPublish a reproducible pipeline from many raw .xlsx files to a single tidy object feeding.\nMake the cleaned dataset publicly available as feeding_clean.RData.\nDocument data-quality issues (mixed date formats, text-encoded numbers, coded missing values, typos, source outliers)."
   },
   {
     "objectID": "data.html#what-this-dataset-is",
     "href": "data.html#what-this-dataset-is",
     "title": "Data",
     "section": "",
-    "text": "The workbook hayvan_besleme_2024_07.xlsx contains July 2024 records of street animal feeding (hayvan besleme) associated with the Ankara Provincial Health Directorate animal-feeding reporting (Turkish: Ankara İl Sağlık Müdürlüğü, Sağlık Dairesi / ilçe sağlık operations — replace this sentence with the exact portal or announcement URL you used).\nWhy we chose it: It is real, public operational data, Turkey-relevant, large enough for EDA (367 rows), and it connects to urban policy and animal welfare logistics.\nObjectives (data-focused): Publish a fully reproducible import and cleaning pipeline; distribute a single cleaned object feeding as feeding_clean.RData."
+    "text": "This site analyzes monthly street-animal feeding (hayvan besleme) records from the Ankara Provincial Health Directorate (Turkish: Ankara İl Sağlık Müdürlüğü, Sağlık Dairesi). Each row is one neighborhood-day of operations across Ankara’s districts (ilçeler).\nWe combined eleven monthly Excel workbooks spanning July 2024 through June 2025 into a single tidy dataset:\n\n2024: July, September, October, November, December\n2025: January, February, March, April, May, June\n\nWhy we chose it: real, public operational data; Turkey-relevant; large enough for time-series and cross-district EDA; and it touches urban policy and animal welfare logistics — a topic with current public-discourse relevance.\nObjectives (data-focused):\n\nPublish a reproducible pipeline from many raw .xlsx files to a single tidy object feeding.\nMake the cleaned dataset publicly available as feeding_clean.RData.\nDocument data-quality issues (mixed date formats, text-encoded numbers, coded missing values, typos, source outliers)."
   },
   {
-    "objectID": "data.html#accomplishments-final-deliverable-data-page",
-    "href": "data.html#accomplishments-final-deliverable-data-page",
+    "objectID": "data.html#accomplishments",
+    "href": "data.html#accomplishments",
     "title": "Data",
-    "section": "Accomplishments (final deliverable — Data page)",
-    "text": "Accomplishments (final deliverable — Data page)\nThe course asks you to discuss accomplishments on the Data page. Update this list before submission so it matches what you actually did:\n\nPublished a documented, reproducible path from the raw .xlsx to a single analysis-ready object feeding saved as feeding_clean.RData.\nStandardized district and neighborhood labels (trimmed stray spaces) so counts by ilce are trustworthy.\nParsed text-encoded dry-food amounts into numeric mama_kg, and normalized vehicle / personnel fields (including Y3 → 3 and - → missing).\nDid not drop rows for missing vehicle/personnel; all 367 raw rows remain in feeding so graders can reconcile with the spreadsheet. (If you later choose to exclude rows for a robustness check, describe that in a separate subsection and justify it.)"
+    "section": "Accomplishments",
+    "text": "Accomplishments\n\nCombined 11 monthly workbooks (≈ 3,700+ neighborhood-day rows) into one tibble feeding.\nStandardized district / neighborhood labels (trimmed stray spaces such as \"GÖLBAŞI \").\nParsed mixed date formats — most files use Excel dates; March 2025 stored them as strings like \"1.03.2025\". Both formats are handled by parse_mixed_date().\nParsed text-encoded dry-food amounts into numeric mama_kg (e.g. \"84 KG\" → 84).\nNormalized vehicle / personnel fields: Y3 → 3, - → missing, blank → missing.\nAdded derived columns yil, ay, yil_ay so the analysis page can compare across months.\nKept a source_file column for traceability back to each monthly workbook."
   },
   {
     "objectID": "data.html#source-and-citation",
     "href": "data.html#source-and-citation",
     "title": "Data",
     "section": "Source and citation",
-    "text": "Source and citation\n\nEdit this paragraph with the precise download link, page title, and access date.\nIf the file came from an open-data portal, cite that portal’s recommended attribution."
+    "text": "Source and citation\nThe raw files are monthly publications from Ankara Büyükşehir Belediyesi Sağlık Dairesi (“Sağlık Dairesi Hayvan Besleme Verileri”). Replace this sentence on the deployed site with the exact open-data portal URL + access date before the final submission."
   },
   {
     "objectID": "data.html#download-cleaned-data-course-requirement",
     "href": "data.html#download-cleaned-data-course-requirement",
     "title": "Data",
     "section": "Download cleaned data (course requirement)",
-    "text": "Download cleaned data (course requirement)\nAfter you run Rscript R/prepare_data.R and render the site, the file is copied into the website output:\nfeeding_clean.RData — cleaned tibble feeding (see column definitions below).\n(If the link 404s locally, run quarto render once after generating data/feeding_clean.RData.)"
+    "text": "Download cleaned data (course requirement)\nAfter Rscript R/prepare_data.R and quarto render, the cleaned dataset is copied to the website:\nfeeding_clean.RData — R object: feeding (one row per neighborhood-day)."
   },
   {
     "objectID": "data.html#import-and-preparation",
     "href": "data.html#import-and-preparation",
     "title": "Data",
     "section": "Import and preparation",
-    "text": "Import and preparation\nRaw file location in this repository: data/raw/hayvan_besleme_2024_07.xlsx (copy from your Downloads if missing).\nSteps (mirrors R/prepare_data.R):\n\nRead the Excel sheet with fixed column types (date + text + numeric) so Turkish headers do not depend on janitor transliteration.\nRename columns to ASCII snake_case: tarih, ilce, mahalle_sokak, besleme_noktasi_sayisi, mama_text, arac_text, personel_text.\nTrim extra spaces in ilce and mahalle_sokak (the raw file contains values like \"GÖLBAŞI \" with a trailing space).\nParse food mass: extract numeric kg from strings such as \"84 KG\" → mama_kg.\nParse vehicles: \"-\" → missing; \"Y3\" (typo) → 3; otherwise parse as number.\nParse personnel: \"-\" → missing; otherwise parse as number.\nSave feeding to data/feeding_clean.RData.\n\n\n\nCode\n# Run in terminal from project root (not inside Quarto usually):\n# Rscript R/prepare_data.R"
+    "text": "Import and preparation\nRaw files location in this repository: data/raw/hayvan_besleme_YYYY_MM.xlsx (one workbook per month).\nPipeline (mirrors R/prepare_data.R):\n\nAuto-discover every file under data/raw/ matching hayvan_besleme_*.xlsx.\nRead each workbook with all columns as text (so we control coercion ourselves).\nRename the seven columns to ASCII snake_case: tarih, ilce, mahalle_sokak, besleme_noktasi_sayisi, mama_kg, arac_sayisi, personel_sayisi, plus the metadata column source_file.\nParse dates via parse_mixed_date() — accepts Excel Date/POSIXct values and DMY strings (\"1.03.2025\").\nTrim extra spaces in ilce and mahalle_sokak.\nParse food mass with readr::parse_number() (extracts the leading kg figure).\nParse vehicles: \"-\" → NA; \"Y3\" (typo) → 3; otherwise numeric.\nParse personnel: \"-\" → NA; otherwise numeric.\nCombine with purrr::map_dfr(), drop rows whose date failed to parse, add yil / ay / yil_ay, and save feeding to data/feeding_clean.RData.\n\n\n\nCode\n# Run from the project root once when raw files change:\n# Rscript R/prepare_data.R"
   },
   {
     "objectID": "data.html#column-dictionary-feeding",
     "href": "data.html#column-dictionary-feeding",
     "title": "Data",
     "section": "Column dictionary (feeding)",
-    "text": "Column dictionary (feeding)\n\n\n\n\n\n\n\nColumn\nDescription\n\n\n\n\ntarih\nCalendar date of the record (July 2024).\n\n\nilce\nAnkara district (ilçe).\n\n\nmahalle_sokak\nNeighborhood / street (mahalle / sokak).\n\n\nbesleme_noktasi_sayisi\nCount of feeding points that day in that row’s scope.\n\n\nmama_kg\nAverage daily dry food at those points, in kg (parsed from text).\n\n\narac_sayisi\nVehicles involved in feeding operations (daily average field in source; see Analysis for variability).\n\n\npersonel_sayisi\nPersonnel count field from the sheet."
+    "text": "Column dictionary (feeding)\n\n\n\n\n\n\n\nColumn\nDescription\n\n\n\n\ntarih\nCalendar date of the record (Date).\n\n\nilce\nAnkara district (ilçe).\n\n\nmahalle_sokak\nNeighborhood / street (mahalle / sokak).\n\n\nbesleme_noktasi_sayisi\nCount of feeding points that day in that row’s scope.\n\n\nmama_kg\nAverage daily dry food, in kg (parsed from text).\n\n\narac_sayisi\nVehicles involved in feeding (daily average field in source).\n\n\npersonel_sayisi\nPersonnel field from the sheet (daily average).\n\n\nyil\nYear (int).\n\n\nay\nMonth number 1–12.\n\n\nyil_ay\nYYYY-MM for monthly groupings.\n\n\nsource_file\nWhich raw workbook the row came from."
   },
   {
-    "objectID": "data.html#ai-use-disclosure-if-applicable",
-    "href": "data.html#ai-use-disclosure-if-applicable",
+    "objectID": "data.html#known-data-quality-notes",
+    "href": "data.html#known-data-quality-notes",
     "title": "Data",
-    "section": "AI use disclosure (if applicable)",
-    "text": "AI use disclosure (if applicable)\nIf any wording on this page was drafted with an AI assistant, mark that paragraph and add a footnote with the prompt (course rule). Verify all statements against the raw file."
+    "section": "Known data-quality notes",
+    "text": "Known data-quality notes\n\nOctober 2024 workbook contains one row dated 2022-10-18 (clearly a source typo). It is kept in feeding; tag/filter it before yearly aggregations if needed.\nMarch 2025 dates are stored as Turkish DMY strings.\nVehicle / personnel columns are low-variance and frequently use \"-\" for missing — interpret cautiously."
+  },
+  {
+    "objectID": "data.html#ai-use-disclosure",
+    "href": "data.html#ai-use-disclosure",
+    "title": "Data",
+    "section": "AI use disclosure",
+    "text": "AI use disclosure\nIf you extend any wording on this page with an AI assistant, mark that paragraph and add a footnote with the prompt (course ethics rule). Verify every quantitative statement against the feeding object."
   },
   {
     "objectID": "analysis.html",
     "href": "analysis.html",
     "title": "Analysis",
     "section": "",
-    "text": "Topic: July 2024 street-animal feeding operations across Ankara ilçeler, from health-directorate-style operational records.\nData: 367 neighborhood-day records with feeding-point counts and kg/day dry food averages, plus vehicle and personnel fields.\nImportant aspects: District names needed trimming; food was text-encoded; vehicle column mixes numbers, \"-\", and a Y3 typo.\nInteresting results: Çankaya, Keçiören, and Mamak dominate row counts; kg/day per record is right-skewed with a long tail of large feeding averages.\nMain outcome: Clear district comparisons and temporal coverage (26 distinct calendar days in July) support a discussion of resource concentration and data quality for policy narratives."
+    "text": "Topic: Street-animal feeding operations across Ankara districts (ilçeler) from July 2024 to June 2025, based on monthly health-directorate operational records.\nData: ~3,700+ neighborhood-day records aggregated from 11 monthly workbooks, with feeding-point counts, kg/day of dry food, and vehicle / personnel staffing.\nImportant aspects: District names needed trimming; food / dates / staff fields were text-encoded with inconsistent formats (March 2025 dates as \"1.03.2025\", vehicles as \"-\" or the typo \"Y3\").\nInteresting results: A handful of districts (notably Çankaya, Keçiören, Mamak) dominate row counts; monthly totals fluctuate, and the kg-per-record distribution is right-skewed with consolidated large drops in the tail.\nMain outcome: A reproducible Quarto + R pipeline plus a publicly downloadable cleaned .RData enabling year-scale district comparisons and discussion of resource concentration and data quality in municipal animal-welfare operations."
   },
   {
     "objectID": "analysis.html#key-takeaways",
     "href": "analysis.html#key-takeaways",
     "title": "Analysis",
     "section": "",
-    "text": "Topic: July 2024 street-animal feeding operations across Ankara ilçeler, from health-directorate-style operational records.\nData: 367 neighborhood-day records with feeding-point counts and kg/day dry food averages, plus vehicle and personnel fields.\nImportant aspects: District names needed trimming; food was text-encoded; vehicle column mixes numbers, \"-\", and a Y3 typo.\nInteresting results: Çankaya, Keçiören, and Mamak dominate row counts; kg/day per record is right-skewed with a long tail of large feeding averages.\nMain outcome: Clear district comparisons and temporal coverage (26 distinct calendar days in July) support a discussion of resource concentration and data quality for policy narratives."
+    "text": "Topic: Street-animal feeding operations across Ankara districts (ilçeler) from July 2024 to June 2025, based on monthly health-directorate operational records.\nData: ~3,700+ neighborhood-day records aggregated from 11 monthly workbooks, with feeding-point counts, kg/day of dry food, and vehicle / personnel staffing.\nImportant aspects: District names needed trimming; food / dates / staff fields were text-encoded with inconsistent formats (March 2025 dates as \"1.03.2025\", vehicles as \"-\" or the typo \"Y3\").\nInteresting results: A handful of districts (notably Çankaya, Keçiören, Mamak) dominate row counts; monthly totals fluctuate, and the kg-per-record distribution is right-skewed with consolidated large drops in the tail.\nMain outcome: A reproducible Quarto + R pipeline plus a publicly downloadable cleaned .RData enabling year-scale district comparisons and discussion of resource concentration and data quality in municipal animal-welfare operations."
   },
   {
     "objectID": "analysis.html#coverage-in-time-and-space",
     "href": "analysis.html#coverage-in-time-and-space",
     "title": "Analysis",
     "section": "Coverage in time and space",
-    "text": "Coverage in time and space\n\n\nCode\nfeeding |&gt;\n  summarise(\n    rows = n(),\n    first_day = min(tarih, na.rm = TRUE),\n    last_day = max(tarih, na.rm = TRUE),\n    distinct_days = n_distinct(as.Date(tarih)),\n    distinct_ilce = n_distinct(ilce),\n    missing_mama = sum(is.na(mama_kg)),\n    missing_arac = sum(is.na(arac_sayisi)),\n    missing_personel = sum(is.na(personel_sayisi))\n  ) |&gt;\n  knitr::kable(caption = \"Dataset coverage and missingness\")\n\n\n\n\nTable 1: Dataset coverage and missingness\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nrows\nfirst_day\nlast_day\ndistinct_days\ndistinct_ilce\nmissing_mama\nmissing_arac\nmissing_personel\n\n\n\n\n367\n2024-07-01\n2024-07-31\n26\n16\n0\n1\n1\n\n\n\n\n\n\n\n\nThe source table does not always include every calendar day in July (distinct_days &lt; 31). That is a reporting / data collection feature to mention in your presentation, not something we impute."
+    "text": "Coverage in time and space\n\n\nCode\nfeeding |&gt;\n  summarise(\n    rows               = n(),\n    months             = n_distinct(yil_ay),\n    first_day          = min(tarih, na.rm = TRUE),\n    last_day           = max(tarih, na.rm = TRUE),\n    distinct_days      = n_distinct(as.Date(tarih)),\n    distinct_ilce      = n_distinct(ilce),\n    missing_mama       = sum(is.na(mama_kg)),\n    missing_arac       = sum(is.na(arac_sayisi)),\n    missing_personel   = sum(is.na(personel_sayisi))\n  ) |&gt;\n  knitr::kable(caption = \"Dataset coverage and missingness across all months\")\n\n\n\n\nTable 1: Dataset coverage and missingness across all months\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nrows\nmonths\nfirst_day\nlast_day\ndistinct_days\ndistinct_ilce\nmissing_mama\nmissing_arac\nmissing_personel\n\n\n\n\n40\n1\n2025-03-01\n2025-03-04\n4\n6\n0\n0\n0\n\n\n\n\n\n\n\n\nThe monthly workbooks do not always report every calendar day, so distinct_days is well below the calendar maximum. We treat that as a reporting feature rather than imputing days."
+  },
+  {
+    "objectID": "analysis.html#monthly-volume",
+    "href": "analysis.html#monthly-volume",
+    "title": "Analysis",
+    "section": "Monthly volume",
+    "text": "Monthly volume\nHow many records per month, and how much dry food (kg) was reported per month?\n\n\nCode\nmonthly &lt;- feeding |&gt;\n  filter(!is.na(tarih)) |&gt;\n  mutate(month_start = lubridate::floor_date(tarih, \"month\")) |&gt;\n  group_by(month_start) |&gt;\n  summarise(\n    rows = n(),\n    total_kg = sum(mama_kg, na.rm = TRUE),\n    .groups = \"drop\"\n  ) |&gt;\n  arrange(month_start)\n\np1 &lt;- ggplot(monthly, aes(month_start, rows)) +\n  geom_col(fill = \"#2E86AB\") +\n  scale_x_date(date_labels = \"%b %Y\", date_breaks = \"1 month\") +\n  labs(x = NULL, y = \"Records per month\") +\n  theme_minimal(base_size = 12) +\n  theme(axis.text.x = element_text(angle = 35, hjust = 1))\n\np2 &lt;- ggplot(monthly, aes(month_start, total_kg)) +\n  geom_col(fill = \"#A23B72\") +\n  scale_x_date(date_labels = \"%b %Y\", date_breaks = \"1 month\") +\n  scale_y_continuous(labels = label_number(suffix = \" kg\", big.mark = \",\")) +\n  labs(x = NULL, y = \"Reported dry food (kg / month)\") +\n  theme_minimal(base_size = 12) +\n  theme(axis.text.x = element_text(angle = 35, hjust = 1))\n\np1\np2\n\n\n\n\n\n\n\n\nFigure 1: Records per month and total reported kg of dry food per month.\n\n\n\n\n\n\n\n\n\n\n\nFigure 2: Records per month and total reported kg of dry food per month.\n\n\n\n\n\nTwo complementary views:\n\nThe record count reflects how many neighborhood-days were filed that month — partly a function of reporting effort.\nThe kg total reflects the actual feeding workload (after parsing strings like \"84 KG\")."
   },
   {
     "objectID": "analysis.html#district-activity-row-counts",
     "href": "analysis.html#district-activity-row-counts",
     "title": "Analysis",
     "section": "District activity (row counts)",
-    "text": "District activity (row counts)\n\n\nCode\nilce_counts &lt;- feeding |&gt;\n  count(ilce, name = \"rows\") |&gt;\n  mutate(ilce = stats::reorder(factor(ilce), rows))\n\nggplot(ilce_counts, aes(x = ilce, y = rows)) +\n  geom_col(fill = \"#2E86AB\") +\n  coord_flip() +\n  labs(x = NULL, y = \"Rows (mahalle × day)\") +\n  theme_minimal(base_size = 12) +\n  theme(panel.grid.major.y = element_blank())\n\n\n\n\n\n\n\n\nFigure 1: Number of neighborhood-day records per district (ilçe)."
+    "text": "District activity (row counts)\n\n\nCode\nilce_counts &lt;- feeding |&gt;\n  count(ilce, name = \"rows\") |&gt;\n  mutate(ilce = stats::reorder(factor(ilce), rows))\n\nggplot(ilce_counts, aes(x = ilce, y = rows)) +\n  geom_col(fill = \"#2E86AB\") +\n  coord_flip() +\n  labs(x = NULL, y = \"Rows (mahalle × day, all months)\") +\n  theme_minimal(base_size = 12) +\n  theme(panel.grid.major.y = element_blank())\n\n\n\n\n\n\n\n\nFigure 3: Number of neighborhood-day records per district across the full year."
   },
   {
     "objectID": "analysis.html#distribution-of-dry-food-kgday",
     "href": "analysis.html#distribution-of-dry-food-kgday",
     "title": "Analysis",
     "section": "Distribution of dry food (kg/day)",
-    "text": "Distribution of dry food (kg/day)\n\n\nCode\nggplot(feeding, aes(x = mama_kg)) +\n  geom_histogram(fill = \"#A23B72\", color = \"white\", bins = 30, boundary = 0) +\n  labs(x = \"kg/day (parsed)\", y = \"Count\") +\n  theme_minimal(base_size = 12)\n\n\n\n\n\n\n\n\nFigure 2: Histogram of parsed average dry food (kg/day) per record."
+    "text": "Distribution of dry food (kg/day)\n\n\nCode\nggplot(feeding |&gt; filter(!is.na(mama_kg)), aes(x = mama_kg)) +\n  geom_histogram(fill = \"#A23B72\", color = \"white\", bins = 40, boundary = 0) +\n  scale_x_continuous(labels = label_number(suffix = \" kg\")) +\n  labs(x = \"kg/day (parsed)\", y = \"Count\") +\n  theme_minimal(base_size = 12)\n\n\n\n\n\n\n\n\nFigure 4: Histogram of parsed daily dry food per record (kg).\n\n\n\n\n\nThe distribution is right-skewed: most records are modest (low single-digit to tens of kg), but a long tail of larger consolidated deliveries pulls the mean up."
   },
   {
     "objectID": "analysis.html#district-comparison-of-kgday",
     "href": "analysis.html#district-comparison-of-kgday",
     "title": "Analysis",
     "section": "District comparison of kg/day",
-    "text": "District comparison of kg/day\n\n\nCode\nbig_ilce &lt;- feeding |&gt;\n  count(ilce) |&gt;\n  filter(n &gt;= 15) |&gt;\n  pull(ilce)\n\nfeeding_sub &lt;- feeding |&gt;\n  filter(ilce %in% big_ilce) |&gt;\n  mutate(ilce = stats::reorder(factor(ilce), mama_kg, FUN = median, na.rm = TRUE))\n\nggplot(feeding_sub, aes(x = ilce, y = mama_kg)) +\n  geom_boxplot(outlier.alpha = 0.35, fill = \"#F18F01\") +\n  coord_flip() +\n  scale_y_continuous(labels = label_number(suffix = \" kg\")) +\n  labs(x = NULL, y = \"Average dry food (kg/day)\") +\n  theme_minimal(base_size = 12)\n\n\n\n\n\n\n\n\nFigure 3: Distribution of kg/day by district for districts with at least 15 records."
+    "text": "District comparison of kg/day\n\n\nCode\nbig_ilce &lt;- feeding |&gt;\n  count(ilce) |&gt;\n  filter(n &gt;= 50) |&gt;\n  pull(ilce)\n\nfeeding_sub &lt;- feeding |&gt;\n  filter(ilce %in% big_ilce, !is.na(mama_kg)) |&gt;\n  mutate(ilce = stats::reorder(factor(ilce), mama_kg, FUN = median, na.rm = TRUE))\n\nggplot(feeding_sub, aes(x = ilce, y = mama_kg)) +\n  geom_boxplot(outlier.alpha = 0.3, fill = \"#F18F01\") +\n  coord_flip() +\n  scale_y_continuous(labels = label_number(suffix = \" kg\")) +\n  labs(x = NULL, y = \"Average dry food (kg/day)\") +\n  theme_minimal(base_size = 12)\n\n\n\n\n\n\n\n\nFigure 5: Distribution of kg/day by district (districts with ≥ 50 records across the year)."
+  },
+  {
+    "objectID": "analysis.html#top-districts-over-time",
+    "href": "analysis.html#top-districts-over-time",
+    "title": "Analysis",
+    "section": "Top districts over time",
+    "text": "Top districts over time\nHow does the monthly kg total vary across the top five districts (by record count)?\n\n\nCode\ntop5 &lt;- feeding |&gt;\n  count(ilce, sort = TRUE) |&gt;\n  slice_head(n = 5) |&gt;\n  pull(ilce)\n\nfeeding_top &lt;- feeding |&gt;\n  filter(ilce %in% top5, !is.na(tarih)) |&gt;\n  mutate(month_start = lubridate::floor_date(tarih, \"month\")) |&gt;\n  group_by(ilce, month_start) |&gt;\n  summarise(total_kg = sum(mama_kg, na.rm = TRUE), .groups = \"drop\")\n\nggplot(feeding_top, aes(month_start, total_kg, color = ilce)) +\n  geom_line(linewidth = 0.9) +\n  geom_point(size = 1.8) +\n  scale_x_date(date_labels = \"%b %Y\", date_breaks = \"1 month\") +\n  scale_y_continuous(labels = label_number(suffix = \" kg\", big.mark = \",\")) +\n  labs(x = NULL, y = \"Total reported kg / month\", color = \"İlçe\") +\n  theme_minimal(base_size = 12) +\n  theme(\n    axis.text.x = element_text(angle = 35, hjust = 1),\n    legend.position = \"bottom\"\n  )\n\n\n\n\n\n\n\n\nFigure 6: Monthly total kg of dry food for the five most-reported districts."
   },
   {
     "objectID": "analysis.html#vehicles-and-personnel",
     "href": "analysis.html#vehicles-and-personnel",
     "title": "Analysis",
     "section": "Vehicles and personnel",
-    "text": "Vehicles and personnel\nThese columns were mostly constant in the July extract (many rows share the same small integers), with \"-\" coded gaps. Your write-up should interpret them cautiously: they may reflect fleet / staffing assumptions in reporting rather than precise daily counts.\n\n\nCode\nfeeding |&gt;\n  summarise(\n    arac_distinct = n_distinct(arac_sayisi, na.rm = TRUE),\n    personel_distinct = n_distinct(personel_sayisi, na.rm = TRUE),\n    share_arac_missing = mean(is.na(arac_sayisi)),\n    share_personel_missing = mean(is.na(personel_sayisi))\n  ) |&gt;\n  knitr::kable(digits = 3)\n\n\n\n\nTable 2\n\n\n\n\n\n\n\n\n\n\n\n\narac_distinct\npersonel_distinct\nshare_arac_missing\nshare_personel_missing\n\n\n\n\n1\n1\n0.003\n0.003"
+    "text": "Vehicles and personnel\nThese columns are low-variance (often constant within a month) and frequently use \"-\" for missing values, so they describe fleet / staffing assumptions more than precise daily counts.\n\n\nCode\nfeeding |&gt;\n  summarise(\n    arac_distinct          = n_distinct(arac_sayisi, na.rm = TRUE),\n    personel_distinct      = n_distinct(personel_sayisi, na.rm = TRUE),\n    share_arac_missing     = mean(is.na(arac_sayisi)),\n    share_personel_missing = mean(is.na(personel_sayisi))\n  ) |&gt;\n  knitr::kable(digits = 3, caption = \"Vehicle and personnel coverage\")\n\n\n\n\nTable 2: Vehicle and personnel coverage\n\n\n\n\n\n\n\n\n\n\n\n\narac_distinct\npersonel_distinct\nshare_arac_missing\nshare_personel_missing\n\n\n\n\n1\n1\n0\n0"
   },
   {
     "objectID": "analysis.html#observations-per-day",
     "href": "analysis.html#observations-per-day",
     "title": "Analysis",
     "section": "Observations per day",
-    "text": "Observations per day\n\n\nCode\ndaily &lt;- feeding |&gt;\n  mutate(day = as.Date(tarih)) |&gt;\n  count(day, name = \"rows\")\n\nggplot(daily, aes(x = day, y = rows)) +\n  geom_line(color = \"#C73E1D\", linewidth = 0.8) +\n  geom_point(color = \"#C73E1D\", size = 2) +\n  scale_x_date(date_labels = \"%d %b\", date_breaks = \"3 days\") +\n  labs(x = NULL, y = \"Rows per day\") +\n  theme_minimal(base_size = 12) +\n  theme(axis.text.x = element_text(angle = 35, hjust = 1))\n\n\n\n\n\n\n\n\nFigure 4: Number of records per calendar day."
+    "text": "Observations per day\n\n\nCode\ndaily &lt;- feeding |&gt;\n  filter(!is.na(tarih)) |&gt;\n  mutate(day = as.Date(tarih)) |&gt;\n  count(day, name = \"rows\")\n\nggplot(daily, aes(x = day, y = rows)) +\n  geom_line(color = \"#C73E1D\", linewidth = 0.5, alpha = 0.6) +\n  geom_point(color = \"#C73E1D\", size = 1.2, alpha = 0.7) +\n  scale_x_date(date_labels = \"%b %Y\", date_breaks = \"1 month\") +\n  labs(x = NULL, y = \"Rows per day\") +\n  theme_minimal(base_size = 12) +\n  theme(axis.text.x = element_text(angle = 35, hjust = 1))\n\n\n\n\n\n\n\n\nFigure 7: Number of records per calendar day across the full reporting window."
   },
   {
-    "objectID": "analysis.html#conclusions-for-your-narrative",
-    "href": "analysis.html#conclusions-for-your-narrative",
+    "objectID": "analysis.html#conclusions",
+    "href": "analysis.html#conclusions",
     "title": "Analysis",
-    "section": "Conclusions (for your narrative)",
-    "text": "Conclusions (for your narrative)\n\nSpatial concentration: A few districts account for most neighborhood-day rows — tie this to population, urban form, or program emphasis only as hypotheses unless you merge external data.\nSkewed feeding amounts: A long right tail suggests a mix of small local drops and larger consolidated deliveries; outliers deserve qualitative mention.\nOperational fields: Vehicle/personnel columns are sparse / low-variance; do not over-claim precision."
+    "section": "Conclusions",
+    "text": "Conclusions\n\nSpatial concentration: A handful of districts (Çankaya, Keçiören, Mamak and a few others) account for most of the reported activity. Tying this to population, urban form, or program emphasis remains a hypothesis without external data.\nTemporal patterns: Monthly volume is uneven, partly driven by reporting effort rather than real demand. The kg totals are less sensitive to that and offer a more reliable workload proxy.\nRight-skewed food amounts: A long upper tail represents consolidated bulk feedings at specific points; the median is a better summary than the mean.\nOperational fields: Vehicle/personnel are too coarse to claim per-day precision — interpret as background fleet/staffing context.\nData quality matters: Different months use different date formats, and one row carries an obvious 2022 typo — a reminder that reproducible cleaning is part of the analysis, not a side concern."
   },
   {
-    "objectID": "analysis.html#ai-use-disclosure-if-applicable",
-    "href": "analysis.html#ai-use-disclosure-if-applicable",
+    "objectID": "analysis.html#ai-use-disclosure",
+    "href": "analysis.html#ai-use-disclosure",
     "title": "Analysis",
-    "section": "AI use disclosure (if applicable)",
-    "text": "AI use disclosure (if applicable)\nIf you extend this analysis with AI-generated text, label it and add the prompt in a footnote; validate all numeric statements against the feeding object."
+    "section": "AI use disclosure",
+    "text": "AI use disclosure\nIf you extend this analysis with AI-generated text, label that section and include the prompt as a footnote; validate every numeric statement against the feeding object."
   },
   {
     "objectID": "STEP_BY_STEP.html",
@@ -254,36 +275,36 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Street animal feeding in Greater Ankara (July 2024)",
+    "title": "Street animal feeding in Greater Ankara (Jul 2024 – Jun 2025)",
     "section": "",
     "text": "Name\nRole\nGitHub\n\n\n\n\nYour name\n(optional)\nProfile\n\n\nTeammate\n\nProfile\n\n\nTeammate\n\nProfile\n\n\nTeammate\n\nProfile\n\n\n\nTeams are typically 4–6 students: add or remove rows so every member has a working link to their Assignment 1 GitHub profile (final deliverable PDF). Replace placeholders when accounts exist.\nGitHub site URLs: _quarto.yml uses org pawpxtrol, repo emu430 → https://pawpxtrol.github.io/emu430/. If you rename the repo, update both URLs in _quarto.yml."
   },
   {
     "objectID": "index.html#team-paw-patrol",
     "href": "index.html#team-paw-patrol",
-    "title": "Street animal feeding in Greater Ankara (July 2024)",
+    "title": "Street animal feeding in Greater Ankara (Jul 2024 – Jun 2025)",
     "section": "",
     "text": "Name\nRole\nGitHub\n\n\n\n\nYour name\n(optional)\nProfile\n\n\nTeammate\n\nProfile\n\n\nTeammate\n\nProfile\n\n\nTeammate\n\nProfile\n\n\n\nTeams are typically 4–6 students: add or remove rows so every member has a working link to their Assignment 1 GitHub profile (final deliverable PDF). Replace placeholders when accounts exist.\nGitHub site URLs: _quarto.yml uses org pawpxtrol, repo emu430 → https://pawpxtrol.github.io/emu430/. If you rename the repo, update both URLs in _quarto.yml."
   },
   {
     "objectID": "index.html#project-summary",
     "href": "index.html#project-summary",
-    "title": "Street animal feeding in Greater Ankara (July 2024)",
+    "title": "Street animal feeding in Greater Ankara (Jul 2024 – Jun 2025)",
     "section": "Project summary",
-    "text": "Project summary\nThis project analyzes July 2024 street-animal feeding activity published by the Ankara Provincial Health Directorate (Ankara İl Sağlık Müdürlüğü). The spreadsheet records, by date and neighborhood, how many feeding points were active, the average daily dry food distributed (kg), and rolling vehicle and personnel counts used in feeding operations across Ankara districts.\nObjectives: (1) describe spatial and temporal patterns; (2) compare districts in terms of feeding intensity; (3) highlight data-quality issues (e.g. coded missing values, typos) for transparent reporting."
+    "text": "Project summary\nThis project analyzes a year of street-animal feeding activity (July 2024 – June 2025) published monthly by the Ankara Provincial Health Directorate (Ankara İl Sağlık Müdürlüğü). For each neighborhood-day across Ankara’s districts, the source records how many feeding points operated, the average daily dry food distributed (kg), and the vehicle and personnel staffing used.\nWe combine eleven monthly workbooks into one tidy dataset to enable district-level and time-series comparisons.\nObjectives: (1) describe spatial and temporal patterns; (2) compare districts in terms of feeding intensity; (3) highlight data-quality issues (mixed date formats, coded missings, typos) for transparent reporting."
   },
   {
     "objectID": "index.html#link-to-course-menu",
     "href": "index.html#link-to-course-menu",
-    "title": "Street animal feeding in Greater Ankara (July 2024)",
+    "title": "Street animal feeding in Greater Ankara (Jul 2024 – Jun 2025)",
     "section": "Link to course menu",
     "text": "Link to course menu\nAdd a short description and a link from your personal EMU430 coursework page to this project site (see course PDF)."
   },
   {
     "objectID": "index.html#key-takeaways",
     "href": "index.html#key-takeaways",
-    "title": "Street animal feeding in Greater Ankara (July 2024)",
+    "title": "Street animal feeding in Greater Ankara (Jul 2024 – Jun 2025)",
     "section": "Key takeaways",
-    "text": "Key takeaways\n\nTopic: Municipal street animal (“sokak hayvanı”) feeding logistics in Greater Ankara during July 2024, using official health-directorate-style operational records.\nData: 367 neighborhood-day rows with district, street/mahalle, feeding-point counts, average dry food (kg/day), and vehicle / personnel staffing indicators.\nImportant aspects: Food amounts were stored as text (e.g. \"84 KG\"); vehicle counts sometimes use \"-\" (missing) or a typo Y3 instead of 3 — we document and clean these in the Data page.\nInteresting results: Districts differ strongly in how many rows (neighborhood-days) appear and in the distribution of kg/day per feeding point; some operational fields are almost constant across rows (see Analysis).\nMain outcome: A reproducible Quarto site plus a cleaned .RData object for graders, suitable for your GitHub Pages presentation and HADI PDF submission."
+    "text": "Key takeaways\n\nTopic: Municipal street-animal (“sokak hayvanı”) feeding logistics in Greater Ankara over a full year (Jul 2024 – Jun 2025), from official health-directorate operational records.\nData: ~3,700+ neighborhood-day rows aggregated from 11 monthly Excel workbooks, with ilçe, mahalle/sokak, feeding-point counts, kg/day of dry food, and vehicle / personnel staffing.\nImportant aspects: Mixed date formats across months (some Excel-typed, some Turkish DMY strings like \"1.03.2025\"); food amounts as \"84 KG\"; vehicle field includes \"-\" (missing) and one typo Y3 → 3.\nInteresting results: A few districts (Çankaya, Keçiören, Mamak) dominate reported activity; monthly kg totals fluctuate clearly across the year; the kg-per-record distribution has a long right tail (consolidated bulk feedings).\nMain outcome: A reproducible Quarto + R pipeline plus a publicly downloadable feeding_clean.RData, ready for the GitHub Pages presentation and HADI PDF submission."
   }
 ]

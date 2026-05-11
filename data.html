@@ -155,12 +155,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#what-this-dataset-is" id="toc-what-this-dataset-is" class="nav-link active" data-scroll-target="#what-this-dataset-is">What this dataset is</a></li>
-  <li><a href="#accomplishments-final-deliverable-data-page" id="toc-accomplishments-final-deliverable-data-page" class="nav-link" data-scroll-target="#accomplishments-final-deliverable-data-page">Accomplishments (final deliverable — Data page)</a></li>
+  <li><a href="#accomplishments" id="toc-accomplishments" class="nav-link" data-scroll-target="#accomplishments">Accomplishments</a></li>
   <li><a href="#source-and-citation" id="toc-source-and-citation" class="nav-link" data-scroll-target="#source-and-citation">Source and citation</a></li>
   <li><a href="#download-cleaned-data-course-requirement" id="toc-download-cleaned-data-course-requirement" class="nav-link" data-scroll-target="#download-cleaned-data-course-requirement">Download cleaned data (course requirement)</a></li>
   <li><a href="#import-and-preparation" id="toc-import-and-preparation" class="nav-link" data-scroll-target="#import-and-preparation">Import and preparation</a></li>
   <li><a href="#column-dictionary-feeding" id="toc-column-dictionary-feeding" class="nav-link" data-scroll-target="#column-dictionary-feeding">Column dictionary (<code>feeding</code>)</a></li>
-  <li><a href="#ai-use-disclosure-if-applicable" id="toc-ai-use-disclosure-if-applicable" class="nav-link" data-scroll-target="#ai-use-disclosure-if-applicable">AI use disclosure (if applicable)</a></li>
+  <li><a href="#known-data-quality-notes" id="toc-known-data-quality-notes" class="nav-link" data-scroll-target="#known-data-quality-notes">Known data-quality notes</a></li>
+  <li><a href="#ai-use-disclosure" id="toc-ai-use-disclosure" class="nav-link" data-scroll-target="#ai-use-disclosure">AI use disclosure</a></li>
   </ul>
 </nav>
     </div>
@@ -188,50 +189,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="what-this-dataset-is" class="level2">
 <h2 class="anchored" data-anchor-id="what-this-dataset-is">What this dataset is</h2>
-<p>The workbook <strong><code>hayvan_besleme_2024_07.xlsx</code></strong> contains <strong>July 2024</strong> records of <strong>street animal feeding</strong> (<code>hayvan besleme</code>) associated with the <strong>Ankara Provincial Health Directorate</strong> animal-feeding reporting (Turkish: <em>Ankara İl Sağlık Müdürlüğü</em>, Sağlık Dairesi / ilçe sağlık operations — <strong>replace this sentence with the exact portal or announcement URL you used</strong>).</p>
-<p><strong>Why we chose it:</strong> It is real, public operational data, <strong>Turkey-relevant</strong>, large enough for EDA (<strong>367</strong> rows), and it connects to <strong>urban policy</strong> and <strong>animal welfare</strong> logistics.</p>
-<p><strong>Objectives (data-focused):</strong> Publish a fully reproducible import and cleaning pipeline; distribute a single cleaned object <strong><code>feeding</code></strong> as <strong><code>feeding_clean.RData</code></strong>.</p>
-</section>
-<section id="accomplishments-final-deliverable-data-page" class="level2">
-<h2 class="anchored" data-anchor-id="accomplishments-final-deliverable-data-page">Accomplishments (final deliverable — Data page)</h2>
-<p>The course asks you to <strong>discuss accomplishments</strong> on the Data page. Update this list before submission so it matches what you actually did:</p>
+<p>This site analyzes <strong>monthly street-animal feeding (<code>hayvan besleme</code>) records</strong> from the <strong>Ankara Provincial Health Directorate</strong> (Turkish: <em>Ankara İl Sağlık Müdürlüğü</em>, Sağlık Dairesi). Each row is one <strong>neighborhood-day</strong> of operations across Ankara’s districts (<em>ilçeler</em>).</p>
+<p>We combined <strong>eleven monthly Excel workbooks</strong> spanning <strong>July 2024 through June 2025</strong> into a single tidy dataset:</p>
 <ul>
-<li>Published a <strong>documented, reproducible</strong> path from the raw <strong><code>.xlsx</code></strong> to a single analysis-ready object <strong><code>feeding</code></strong> saved as <strong><code>feeding_clean.RData</code></strong>.</li>
-<li><strong>Standardized</strong> district and neighborhood labels (trimmed stray spaces) so counts by <code>ilce</code> are trustworthy.</li>
-<li><strong>Parsed</strong> text-encoded dry-food amounts into numeric <strong><code>mama_kg</code></strong>, and normalized <strong>vehicle</strong> / <strong>personnel</strong> fields (including <strong><code>Y3</code> → 3</strong> and <strong><code>-</code> → missing</strong>).</li>
-<li><strong>Did not drop rows</strong> for missing vehicle/personnel; all <strong>367</strong> raw rows remain in <strong><code>feeding</code></strong> so graders can reconcile with the spreadsheet. (If you later choose to exclude rows for a robustness check, describe that in a separate subsection and justify it.)</li>
+<li>2024: July, September, October, November, December</li>
+<li>2025: January, February, March, April, May, June</li>
+</ul>
+<p><strong>Why we chose it:</strong> real, public operational data; <strong>Turkey-relevant</strong>; large enough for time-series and cross-district EDA; and it touches <strong>urban policy</strong> and <strong>animal welfare</strong> logistics — a topic with current public-discourse relevance.</p>
+<p><strong>Objectives (data-focused):</strong></p>
+<ol type="1">
+<li>Publish a <strong>reproducible</strong> pipeline from many raw <code>.xlsx</code> files to a single tidy object <code>feeding</code>.</li>
+<li>Make the cleaned dataset publicly available as <strong><code>feeding_clean.RData</code></strong>.</li>
+<li>Document <strong>data-quality issues</strong> (mixed date formats, text-encoded numbers, coded missing values, typos, source outliers).</li>
+</ol>
+</section>
+<section id="accomplishments" class="level2">
+<h2 class="anchored" data-anchor-id="accomplishments">Accomplishments</h2>
+<ul>
+<li>Combined <strong>11 monthly workbooks</strong> (≈ 3,700+ neighborhood-day rows) into one tibble <code>feeding</code>.</li>
+<li><strong>Standardized</strong> district / neighborhood labels (trimmed stray spaces such as <code>"GÖLBAŞI "</code>).</li>
+<li><strong>Parsed mixed date formats</strong> — most files use Excel dates; <strong>March 2025</strong> stored them as strings like <code>"1.03.2025"</code>. Both formats are handled by <code>parse_mixed_date()</code>.</li>
+<li><strong>Parsed</strong> text-encoded dry-food amounts into numeric <strong><code>mama_kg</code></strong> (e.g.&nbsp;<code>"84 KG"</code> → <code>84</code>).</li>
+<li><strong>Normalized vehicle / personnel</strong> fields: <strong><code>Y3</code> → 3</strong>, <strong><code>-</code> → missing</strong>, blank → missing.</li>
+<li>Added derived columns <strong><code>yil</code></strong>, <strong><code>ay</code></strong>, <strong><code>yil_ay</code></strong> so the analysis page can compare across months.</li>
+<li>Kept a <strong><code>source_file</code></strong> column for traceability back to each monthly workbook.</li>
 </ul>
 </section>
 <section id="source-and-citation" class="level2">
 <h2 class="anchored" data-anchor-id="source-and-citation">Source and citation</h2>
-<ol type="1">
-<li><strong>Edit this paragraph</strong> with the precise download link, page title, and <strong>access date</strong>.</li>
-<li>If the file came from an open-data portal, cite that portal’s recommended attribution.</li>
-</ol>
+<p>The raw files are monthly publications from <strong>Ankara Büyükşehir Belediyesi Sağlık Dairesi</strong> (“Sağlık Dairesi Hayvan Besleme Verileri”). Replace this sentence on the deployed site with the <strong>exact open-data portal URL</strong> + <strong>access date</strong> before the final submission.</p>
 </section>
 <section id="download-cleaned-data-course-requirement" class="level2">
 <h2 class="anchored" data-anchor-id="download-cleaned-data-course-requirement">Download cleaned data (course requirement)</h2>
-<p>After you run <code>Rscript R/prepare_data.R</code> and render the site, the file is copied into the website output:</p>
-<p><strong><a href="data/feeding_clean.RData">feeding_clean.RData</a></strong> — cleaned tibble <code>feeding</code> (see column definitions below).</p>
-<p><em>(If the link 404s locally, run <code>quarto render</code> once after generating <code>data/feeding_clean.RData</code>.)</em></p>
+<p>After <code>Rscript R/prepare_data.R</code> and <code>quarto render</code>, the cleaned dataset is copied to the website:</p>
+<p><strong><a href="data/feeding_clean.RData">feeding_clean.RData</a></strong> — R object: <code>feeding</code> (one row per neighborhood-day).</p>
 </section>
 <section id="import-and-preparation" class="level2">
 <h2 class="anchored" data-anchor-id="import-and-preparation">Import and preparation</h2>
-<p><strong>Raw file location in this repository:</strong> <code>data/raw/hayvan_besleme_2024_07.xlsx</code> (copy from your Downloads if missing).</p>
-<p><strong>Steps (mirrors <code>R/prepare_data.R</code>):</strong></p>
+<p><strong>Raw files location in this repository:</strong> <code>data/raw/hayvan_besleme_YYYY_MM.xlsx</code> (one workbook per month).</p>
+<p><strong>Pipeline (mirrors <code>R/prepare_data.R</code>):</strong></p>
 <ol type="1">
-<li><strong>Read</strong> the Excel sheet with fixed column types (date + text + numeric) so Turkish headers do not depend on <code>janitor</code> transliteration.</li>
-<li><strong>Rename</strong> columns to ASCII snake_case: <code>tarih</code>, <code>ilce</code>, <code>mahalle_sokak</code>, <code>besleme_noktasi_sayisi</code>, <code>mama_text</code>, <code>arac_text</code>, <code>personel_text</code>.</li>
-<li><strong>Trim</strong> extra spaces in <code>ilce</code> and <code>mahalle_sokak</code> (the raw file contains values like <code>"GÖLBAŞI "</code> with a trailing space).</li>
-<li><strong>Parse food mass:</strong> extract numeric <strong>kg</strong> from strings such as <code>"84 KG"</code> → <code>mama_kg</code>.</li>
-<li><strong>Parse vehicles:</strong> <code>"-"</code> → missing; <code>"Y3"</code> (typo) → <strong>3</strong>; otherwise parse as number.</li>
-<li><strong>Parse personnel:</strong> <code>"-"</code> → missing; otherwise parse as number.</li>
-<li><strong>Save</strong> <code>feeding</code> to <code>data/feeding_clean.RData</code>.</li>
+<li><strong>Auto-discover</strong> every file under <code>data/raw/</code> matching <code>hayvan_besleme_*.xlsx</code>.</li>
+<li><strong>Read</strong> each workbook with all columns as text (so we control coercion ourselves).</li>
+<li><strong>Rename</strong> the seven columns to ASCII snake_case: <code>tarih</code>, <code>ilce</code>, <code>mahalle_sokak</code>, <code>besleme_noktasi_sayisi</code>, <code>mama_kg</code>, <code>arac_sayisi</code>, <code>personel_sayisi</code>, plus the metadata column <code>source_file</code>.</li>
+<li><strong>Parse dates</strong> via <code>parse_mixed_date()</code> — accepts Excel <code>Date</code>/<code>POSIXct</code> values and DMY strings (<code>"1.03.2025"</code>).</li>
+<li><strong>Trim</strong> extra spaces in <code>ilce</code> and <code>mahalle_sokak</code>.</li>
+<li><strong>Parse food mass</strong> with <code>readr::parse_number()</code> (extracts the leading kg figure).</li>
+<li><strong>Parse vehicles:</strong> <code>"-"</code> → <code>NA</code>; <code>"Y3"</code> (typo) → <code>3</code>; otherwise numeric.</li>
+<li><strong>Parse personnel:</strong> <code>"-"</code> → <code>NA</code>; otherwise numeric.</li>
+<li><strong>Combine</strong> with <code>purrr::map_dfr()</code>, drop rows whose date failed to parse, add <code>yil</code> / <code>ay</code> / <code>yil_ay</code>, and <strong>save</strong> <code>feeding</code> to <code>data/feeding_clean.RData</code>.</li>
 </ol>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run in terminal from project root (not inside Quarto usually):</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run from the project root once when raw files change:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Rscript R/prepare_data.R</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
@@ -252,7 +263,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td><code>tarih</code></td>
-<td>Calendar date of the record (July 2024).</td>
+<td>Calendar date of the record (<code>Date</code>).</td>
 </tr>
 <tr class="even">
 <td><code>ilce</code></td>
@@ -268,22 +279,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td><code>mama_kg</code></td>
-<td><strong>Average daily dry food</strong> at those points, in <strong>kg</strong> (parsed from text).</td>
+<td><strong>Average daily dry food</strong>, in <strong>kg</strong> (parsed from text).</td>
 </tr>
 <tr class="even">
 <td><code>arac_sayisi</code></td>
-<td><strong>Vehicles</strong> involved in feeding operations (daily average field in source; see Analysis for variability).</td>
+<td><strong>Vehicles</strong> involved in feeding (daily average field in source).</td>
 </tr>
 <tr class="odd">
 <td><code>personel_sayisi</code></td>
-<td><strong>Personnel</strong> count field from the sheet.</td>
+<td><strong>Personnel</strong> field from the sheet (daily average).</td>
+</tr>
+<tr class="even">
+<td><code>yil</code></td>
+<td>Year (<code>int</code>).</td>
+</tr>
+<tr class="odd">
+<td><code>ay</code></td>
+<td>Month number 1–12.</td>
+</tr>
+<tr class="even">
+<td><code>yil_ay</code></td>
+<td><code>YYYY-MM</code> for monthly groupings.</td>
+</tr>
+<tr class="odd">
+<td><code>source_file</code></td>
+<td>Which raw workbook the row came from.</td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="ai-use-disclosure-if-applicable" class="level2">
-<h2 class="anchored" data-anchor-id="ai-use-disclosure-if-applicable">AI use disclosure (if applicable)</h2>
-<p>If any <strong>wording</strong> on this page was drafted with an AI assistant, <strong>mark that paragraph</strong> and add a <strong>footnote with the prompt</strong> (course rule). Verify all statements against the raw file.</p>
+<section id="known-data-quality-notes" class="level2">
+<h2 class="anchored" data-anchor-id="known-data-quality-notes">Known data-quality notes</h2>
+<ul>
+<li><strong>October 2024</strong> workbook contains one row dated <strong>2022-10-18</strong> (clearly a source typo). It is kept in <code>feeding</code>; tag/filter it before yearly aggregations if needed.</li>
+<li><strong>March 2025</strong> dates are stored as Turkish DMY strings.</li>
+<li>Vehicle / personnel columns are <strong>low-variance</strong> and frequently use <code>"-"</code> for missing — interpret cautiously.</li>
+</ul>
+</section>
+<section id="ai-use-disclosure" class="level2">
+<h2 class="anchored" data-anchor-id="ai-use-disclosure">AI use disclosure</h2>
+<p>If you extend any wording on this page with an AI assistant, <strong>mark that paragraph</strong> and add a <strong>footnote with the prompt</strong> (course ethics rule). Verify every quantitative statement against the <code>feeding</code> object.</p>
 
 
 <!-- -->
@@ -753,71 +788,90 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## What this dataset is</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>The workbook **`hayvan_besleme_2024_07.xlsx`** contains **July 2024** records of **street animal feeding** (`hayvan besleme`) associated with the **Ankara Provincial Health Directorate** animal-feeding reporting (Turkish: *Ankara İl Sağlık Müdürlüğü*, Sağlık Dairesi / ilçe sağlık operations — **replace this sentence with the exact portal or announcement URL you used**).</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>This site analyzes **monthly street-animal feeding (`hayvan besleme`) records** from the **Ankara Provincial Health Directorate** (Turkish: *Ankara İl Sağlık Müdürlüğü*, Sağlık Dairesi). Each row is one **neighborhood-day** of operations across Ankara's districts (*ilçeler*).</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>**Why we chose it:** It is real, public operational data, **Turkey-relevant**, large enough for EDA (**367** rows), and it connects to **urban policy** and **animal welfare** logistics.</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>We combined **eleven monthly Excel workbooks** spanning **July 2024 through June 2025** into a single tidy dataset:</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>**Objectives (data-focused):** Publish a fully reproducible import and cleaning pipeline; distribute a single cleaned object **`feeding`** as **`feeding_clean.RData`**.</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Accomplishments (final deliverable — Data page)</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>The course asks you to **discuss accomplishments** on the Data page. Update this list before submission so it matches what you actually did:</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Published a **documented, reproducible** path from the raw **`.xlsx`** to a single analysis-ready object **`feeding`** saved as **`feeding_clean.RData`**.</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Standardized** district and neighborhood labels (trimmed stray spaces) so counts by <span class="in">`ilce`</span> are trustworthy.</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Parsed** text-encoded dry-food amounts into numeric **`mama_kg`**, and normalized **vehicle** / **personnel** fields (including **`Y3` → 3** and **`-` → missing**).</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Did not drop rows** for missing vehicle/personnel; all **367** raw rows remain in **`feeding`** so graders can reconcile with the spreadsheet. (If you later choose to exclude rows for a robustness check, describe that in a separate subsection and justify it.)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>2024: July, September, October, November, December</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>2025: January, February, March, April, May, June</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>**Why we chose it:** real, public operational data; **Turkey-relevant**; large enough for time-series and cross-district EDA; and it touches **urban policy** and **animal welfare** logistics — a topic with current public-discourse relevance.</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>**Objectives (data-focused):**</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Publish a **reproducible** pipeline from many raw <span class="in">`.xlsx`</span> files to a single tidy object <span class="in">`feeding`</span>.</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Make the cleaned dataset publicly available as **`feeding_clean.RData`**.</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Document **data-quality issues** (mixed date formats, text-encoded numbers, coded missing values, typos, source outliers).</span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Source and citation</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Accomplishments</span></span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Edit this paragraph** with the precise download link, page title, and **access date**.</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>If the file came from an open-data portal, cite that portal’s recommended attribution.</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Download cleaned data (course requirement)</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>After you run <span class="in">`Rscript R/prepare_data.R`</span> and render the site, the file is copied into the website output:</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>**[feeding_clean.RData](data/feeding_clean.RData)** — cleaned tibble <span class="in">`feeding`</span> (see column definitions below).</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>*(If the link 404s locally, run `quarto render` once after generating `data/feeding_clean.RData`.)*</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Import and preparation</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>**Raw file location in this repository:** <span class="in">`data/raw/hayvan_besleme_2024_07.xlsx`</span> (copy from your Downloads if missing).</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>**Steps (mirrors `R/prepare_data.R`):**</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Read** the Excel sheet with fixed column types (date + text + numeric) so Turkish headers do not depend on <span class="in">`janitor`</span> transliteration.</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Rename** columns to ASCII snake_case: <span class="in">`tarih`</span>, <span class="in">`ilce`</span>, <span class="in">`mahalle_sokak`</span>, <span class="in">`besleme_noktasi_sayisi`</span>, <span class="in">`mama_text`</span>, <span class="in">`arac_text`</span>, <span class="in">`personel_text`</span>.</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Trim** extra spaces in <span class="in">`ilce`</span> and <span class="in">`mahalle_sokak`</span> (the raw file contains values like <span class="in">`"GÖLBAŞI "`</span> with a trailing space).</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Parse food mass:** extract numeric **kg** from strings such as <span class="in">`"84 KG"`</span> → <span class="in">`mama_kg`</span>.</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Parse vehicles:** `"-"` → missing; `"Y3"` (typo) → **3**; otherwise parse as number.</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Parse personnel:** <span class="in">`"-"`</span> → missing; otherwise parse as number.</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**Save** <span class="in">`feeding`</span> to <span class="in">`data/feeding_clean.RData`</span>.</span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: show-prepare</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Run in terminal from project root (not inside Quarto usually):</span></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Rscript R/prepare_data.R</span></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="fu">## Column dictionary (`feeding`)</span></span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Column <span class="pp">|</span> Description <span class="pp">|</span></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|-------------|</span></span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`tarih`</span> <span class="pp">|</span> Calendar date of the record (July 2024). <span class="pp">|</span></span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`ilce`</span> <span class="pp">|</span> Ankara **district** (*ilçe*). <span class="pp">|</span></span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`mahalle_sokak`</span> <span class="pp">|</span> Neighborhood / street (*mahalle / sokak*). <span class="pp">|</span></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`besleme_noktasi_sayisi`</span> <span class="pp">|</span> Count of **feeding points** that day in that row’s scope. <span class="pp">|</span></span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`mama_kg`</span> <span class="pp">|</span> **Average daily dry food** at those points, in **kg** (parsed from text). <span class="pp">|</span></span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`arac_sayisi`</span> <span class="pp">|</span> **Vehicles** involved in feeding operations (daily average field in source; see Analysis for variability). <span class="pp">|</span></span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`personel_sayisi`</span> <span class="pp">|</span> **Personnel** count field from the sheet. <span class="pp">|</span></span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="fu">## AI use disclosure (if applicable)</span></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>If any **wording** on this page was drafted with an AI assistant, **mark that paragraph** and add a **footnote with the prompt** (course rule). Verify all statements against the raw file.</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Combined **11 monthly workbooks** (≈ 3,700+ neighborhood-day rows) into one tibble <span class="in">`feeding`</span>.</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Standardized** district / neighborhood labels (trimmed stray spaces such as <span class="in">`"GÖLBAŞI "`</span>).</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Parsed mixed date formats** — most files use Excel dates; **March 2025** stored them as strings like <span class="in">`"1.03.2025"`</span>. Both formats are handled by <span class="in">`parse_mixed_date()`</span>.</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Parsed** text-encoded dry-food amounts into numeric **`mama_kg`** (e.g. <span class="in">`"84 KG"`</span> → <span class="in">`84`</span>).</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Normalized vehicle / personnel** fields: **`Y3` → 3**, **`-` → missing**, blank → missing.</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Added derived columns **`yil`**, **`ay`**, **`yil_ay`** so the analysis page can compare across months.</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Kept a **`source_file`** column for traceability back to each monthly workbook.</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## Source and citation</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>The raw files are monthly publications from **Ankara Büyükşehir Belediyesi Sağlık Dairesi** ("Sağlık Dairesi Hayvan Besleme Verileri"). Replace this sentence on the deployed site with the **exact open-data portal URL** + **access date** before the final submission.</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## Download cleaned data (course requirement)</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>After <span class="in">`Rscript R/prepare_data.R`</span> and <span class="in">`quarto render`</span>, the cleaned dataset is copied to the website:</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>**[feeding_clean.RData](data/feeding_clean.RData)** — R object: <span class="in">`feeding`</span> (one row per neighborhood-day).</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="fu">## Import and preparation</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>**Raw files location in this repository:** <span class="in">`data/raw/hayvan_besleme_YYYY_MM.xlsx`</span> (one workbook per month).</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>**Pipeline (mirrors `R/prepare_data.R`):**</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Auto-discover** every file under <span class="in">`data/raw/`</span> matching <span class="in">`hayvan_besleme_*.xlsx`</span>.</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Read** each workbook with all columns as text (so we control coercion ourselves).</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Rename** the seven columns to ASCII snake_case: <span class="in">`tarih`</span>, <span class="in">`ilce`</span>, <span class="in">`mahalle_sokak`</span>, <span class="in">`besleme_noktasi_sayisi`</span>, <span class="in">`mama_kg`</span>, <span class="in">`arac_sayisi`</span>, <span class="in">`personel_sayisi`</span>, plus the metadata column <span class="in">`source_file`</span>.</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Parse dates** via <span class="in">`parse_mixed_date()`</span> — accepts Excel <span class="in">`Date`</span>/<span class="in">`POSIXct`</span> values and DMY strings (<span class="in">`"1.03.2025"`</span>).</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**Trim** extra spaces in <span class="in">`ilce`</span> and <span class="in">`mahalle_sokak`</span>.</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Parse food mass** with <span class="in">`readr::parse_number()`</span> (extracts the leading kg figure).</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**Parse vehicles:** <span class="in">`"-"`</span> → <span class="in">`NA`</span>; <span class="in">`"Y3"`</span> (typo) → <span class="in">`3`</span>; otherwise numeric.</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>**Parse personnel:** <span class="in">`"-"`</span> → <span class="in">`NA`</span>; otherwise numeric.</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="ss">9. </span>**Combine** with `purrr::map_dfr()`, drop rows whose date failed to parse, add `yil` / `ay` / `yil_ay`, and **save** <span class="in">`feeding`</span> to <span class="in">`data/feeding_clean.RData`</span>.</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: show-prepare</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="co"># Run from the project root once when raw files change:</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Rscript R/prepare_data.R</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="fu">## Column dictionary (`feeding`)</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Column <span class="pp">|</span> Description <span class="pp">|</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------|-------------|</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`tarih`</span> <span class="pp">|</span> Calendar date of the record (<span class="in">`Date`</span>). <span class="pp">|</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`ilce`</span> <span class="pp">|</span> Ankara **district** (*ilçe*). <span class="pp">|</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`mahalle_sokak`</span> <span class="pp">|</span> Neighborhood / street (*mahalle / sokak*). <span class="pp">|</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`besleme_noktasi_sayisi`</span> <span class="pp">|</span> Count of **feeding points** that day in that row's scope. <span class="pp">|</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`mama_kg`</span> <span class="pp">|</span> **Average daily dry food**, in **kg** (parsed from text). <span class="pp">|</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`arac_sayisi`</span> <span class="pp">|</span> **Vehicles** involved in feeding (daily average field in source). <span class="pp">|</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`personel_sayisi`</span> <span class="pp">|</span> **Personnel** field from the sheet (daily average). <span class="pp">|</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`yil`</span> <span class="pp">|</span> Year (<span class="in">`int`</span>). <span class="pp">|</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`ay`</span> <span class="pp">|</span> Month number 1–12. <span class="pp">|</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`yil_ay`</span> <span class="pp">|</span> <span class="in">`YYYY-MM`</span> for monthly groupings. <span class="pp">|</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`source_file`</span> <span class="pp">|</span> Which raw workbook the row came from. <span class="pp">|</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## Known data-quality notes</span></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**October 2024** workbook contains one row dated **2022-10-18** (clearly a source typo). It is kept in <span class="in">`feeding`</span>; tag/filter it before yearly aggregations if needed.</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**March 2025** dates are stored as Turkish DMY strings.</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Vehicle / personnel columns are **low-variance** and frequently use <span class="in">`"-"`</span> for missing — interpret cautiously.</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a><span class="fu">## AI use disclosure</span></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>If you extend any wording on this page with an AI assistant, **mark that paragraph** and add a **footnote with the prompt** (course ethics rule). Verify every quantitative statement against the <span class="in">`feeding`</span> object.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
