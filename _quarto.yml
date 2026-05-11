@@ -1,8 +1,6 @@
 project:
   type: website
   output-dir: _site
-  pre-render:
-    - "Rscript R/prepare_data.R"
   resources:
     - data/feeding_clean.RData
 

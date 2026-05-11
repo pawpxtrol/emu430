@@ -48,11 +48,17 @@ jobs:
             any::knitr
             any::rmarkdown
 
+      - name: Prepare data (feeding_clean.RData)
+        run: Rscript R/prepare_data.R
+
       - name: Render site
-        run: quarto render
+        run: quarto render --no-cache
 
       - name: Verify site output
-        run: test -d _site && test -n "$(ls -A _site 2>/dev/null)" || (echo "_site missing or empty" && exit 1)
+        run: |
+          echo "Contents of _site:"
+          ls _site/
+          test -f _site/index.html || (echo "ERROR: _site/index.html missing" && exit 1)
 
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
