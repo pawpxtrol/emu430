@@ -36,6 +36,41 @@ Teammates add their **Assignment 1** profile links in `index.qmd`; they do not n
 
 If anything in the raw file changes, replace `data/raw/hayvan_besleme_2024_07.xlsx` and re-run `Rscript R/prepare_data.R`.
 
+## Push fails with `401` / `Missing or invalid credentials` (Cursor)
+
+Cursor sets **`GIT_ASKPASS`** to an internal helper; it often breaks **`git push`** over HTTPS to GitHub.
+
+**Do this:**
+
+1. Ensure the repo exists: while logged in as **pawpatrol**, open [github.com/new](https://github.com/new), name **`emu430`**, public, **no** README — **Create repository**.
+2. Open **Terminal.app** (Apple’s Terminal, not Cursor’s tab).
+3. Run:
+
+   ```bash
+   cd /Users/talyat/Documents/mateo_project/emu430
+   chmod +x scripts/git-push-terminal.sh
+   ./scripts/git-push-terminal.sh
+   ```
+
+   The script **unsets** `GIT_ASKPASS` so macOS can use **Keychain** or prompt in the terminal.
+
+4. If Git still asks for a password: GitHub no longer accepts account passwords over HTTPS. Use a **[Personal Access Token](https://github.com/settings/tokens)** as the password, or switch to SSH:
+
+   ```bash
+   git remote set-url origin git@github.com:pawpatrol/emu430.git
+   ssh -T git@github.com    # must say “Hi pawpatrol!”
+   ./scripts/git-push-terminal.sh
+   ```
+
+5. Or use **GitHub CLI** once, then push from Terminal:
+
+   ```bash
+   gh auth login
+   gh auth setup-git
+   cd /Users/talyat/Documents/mateo_project/emu430
+   ./scripts/git-push-terminal.sh
+   ```
+
 ## Copy into your team repository
 
 **Option A — this folder becomes the repo root:** initialize git here (or clone your empty team repo and copy these files in).
