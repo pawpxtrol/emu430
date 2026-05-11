@@ -7,10 +7,8 @@ subtitle: "EMU430 — Team Paw Patrol"
 
 | Name | Role | GitHub |
 |------|------|----------|
-| **Your name** | *(optional)* | [Profile](https://github.com/YOUR_USERNAME) |
-| **Teammate** | | [Profile](https://github.com/) |
-| **Teammate** | | [Profile](https://github.com/) |
-| **Teammate** | | [Profile](https://github.com/) |
+| **Sudenaz Usta** | | [@sudenazusta](https://github.com/sudenazusta) |
+| **Gökçe Eren** | | [@gokceeren20-ctrl](https://github.com/gokceeren20-ctrl) |
 
 *Teams are typically **4–6** students: add or remove rows so every member has a **working link** to their **Assignment 1** GitHub profile (final deliverable PDF). Replace placeholders when accounts exist.*
 
