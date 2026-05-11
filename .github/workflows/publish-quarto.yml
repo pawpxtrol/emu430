@@ -1,5 +1,7 @@
-# Render Quarto → _site, then deploy via GitHub Pages (Actions source).
-# Avoids quarto publish gh-pages + _publish.yml bootstrap issues.
+# Render Quarto → _site, deploy via GitHub Pages (Actions source).
+#
+# REQUIRED on GitHub: Settings → Pages → Build and deployment → Source → GitHub Actions
+# (NOT "Deploy from a branch".) First deploy may ask you to approve the `github-pages` environment.
 
 name: Publish Quarto site
 
@@ -8,11 +10,6 @@ on:
     branches: [main, master]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: quarto-pages
   cancel-in-progress: false
@@ -20,6 +17,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,17 +31,22 @@ jobs:
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: "4.4.2"
+          r-version: "4.3.3"
           use-public-rspm: true
 
+      # Minimal packages (faster than full tidyverse; matches prepare_data.R + analysis.qmd)
       - name: Install R packages
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages: |
-            any::tidyverse
             any::readxl
+            any::dplyr
+            any::stringr
+            any::readr
             any::here
+            any::ggplot2
             any::scales
+            any::lubridate
             any::knitr
             any::rmarkdown
 
@@ -57,6 +61,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

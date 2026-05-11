@@ -110,13 +110,22 @@ Empty new repo has no `main` yet — a normal **`git push -u origin main`** afte
 
 ## GitHub Pages (automated)
 
-Workflow: `.github/workflows/publish-quarto.yml` — renders with **Quarto + R**, uploads **`_site`**, deploys with **GitHub Pages (Actions)** (no `gh-pages` branch required).
+Workflow: `.github/workflows/publish-quarto.yml` — renders with **Quarto + R**, uploads **`_site`**, deploys with **GitHub Pages (Actions)**.
 
-1. Push to **`main`** (or run **Actions → Publish Quarto site → Run workflow**).
-2. **Settings → Pages → Build and deployment → Source:** choose **GitHub Actions** (not “Deploy from a branch”). Save if prompted.
-3. After a **green** workflow run, the site URL is shown on the workflow summary and at **Settings → Pages** (e.g. **`https://pawpxtrol.github.io/emu430/`**).
+### One-time setup (if the workflow is orange or red)
 
-If the first deploy fails, open the failed job log; common fixes: ensure **Pages** source is **GitHub Actions**, and re-run the workflow.
+1. **Settings → Pages → Build and deployment → Source**  
+   Choose **GitHub Actions** (not “Deploy from a branch”). **Save.**  
+   If this stays on a branch, the **Deploy** job will fail.
+
+2. **First deploy only:** open the **in-progress / waiting** workflow run. If GitHub shows **“Waiting for approval”** for environment **`github-pages`**, click **Review deployments** → **Approve**.  
+   (Orange / yellow often means **waiting for this approval**.)
+
+3. **Re-run:** **Actions → Publish Quarto site →** pick the latest run → **Re-run all jobs** (after Pages source is GitHub Actions).
+
+4. When green, **Settings → Pages** shows the live URL (e.g. **`https://pawpxtrol.github.io/emu430/`**).
+
+If it still fails, open the **red** job → expand **Render site** or **Deploy to GitHub Pages** → copy the **last 30 lines** of the log into a message here.
 
 ## HADI submission (PDF)
 
