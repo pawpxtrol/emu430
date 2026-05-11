@@ -110,22 +110,20 @@ Empty new repo has no `main` yet — a normal **`git push -u origin main`** afte
 
 ## GitHub Pages (automated)
 
-Workflow: `.github/workflows/publish-quarto.yml` — renders with **Quarto + R**, uploads **`_site`**, deploys with **GitHub Pages (Actions)**.
+Workflow: `.github/workflows/publish-quarto.yml` — renders the site, then pushes **`_site`** to the **`gh-pages`** branch using **`peaceiris/actions-gh-pages`** (only needs `contents: write`, no OIDC / “GitHub Actions” Pages source).
 
-### One-time setup (if the workflow is orange or red)
+### One-time setup
 
 1. **Settings → Pages → Build and deployment → Source**  
-   Choose **GitHub Actions** (not “Deploy from a branch”). **Save.**  
-   If this stays on a branch, the **Deploy** job will fail.
+   Select **Deploy from a branch** → Branch **`gh-pages`** → folder **`/ (root)`** → **Save**.
 
-2. **First deploy only:** open the **in-progress / waiting** workflow run. If GitHub shows **“Waiting for approval”** for environment **`github-pages`**, click **Review deployments** → **Approve**.  
-   (Orange / yellow often means **waiting for this approval**.)
+2. Push to **`main`** (or **Actions → Publish Quarto site → Run workflow**). After the first **green** run, **`gh-pages`** will exist.
 
-3. **Re-run:** **Actions → Publish Quarto site →** pick the latest run → **Re-run all jobs** (after Pages source is GitHub Actions).
+3. Live URL: **`https://pawpxtrol.github.io/emu430/`** (shown under **Settings → Pages**).
 
-4. When green, **Settings → Pages** shows the live URL (e.g. **`https://pawpxtrol.github.io/emu430/`**).
+### If the workflow is still red
 
-If it still fails, open the **red** job → expand **Render site** or **Deploy to GitHub Pages** → copy the **last 30 lines** of the log into a message here.
+Open the run → expand **Render site** or **Deploy to gh-pages branch** → copy the **last 40 lines** of the log. Common issues: **Actions → General → Workflow permissions** must allow **Read and write** (for `GITHUB_TOKEN` to push `gh-pages`).
 
 ## HADI submission (PDF)
 

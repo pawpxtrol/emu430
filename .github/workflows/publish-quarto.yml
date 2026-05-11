@@ -1,7 +1,5 @@
-# Render Quarto → _site, deploy via GitHub Pages (Actions source).
-#
-# REQUIRED on GitHub: Settings → Pages → Build and deployment → Source → GitHub Actions
-# (NOT "Deploy from a branch".) First deploy may ask you to approve the `github-pages` environment.
+# Build Quarto site, push _site/ to gh-pages branch (classic Pages flow).
+# Works when "GitHub Actions" Pages source + deploy-pages fails (common on orgs / OIDC).
 
 name: Publish Quarto site
 
@@ -10,15 +8,16 @@ on:
     branches: [main, master]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 concurrency:
   group: quarto-pages
   cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,7 +33,6 @@ jobs:
           r-version: "4.3.3"
           use-public-rspm: true
 
-      # Minimal packages (faster than full tidyverse; matches prepare_data.R + analysis.qmd)
       - name: Install R packages
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -53,21 +51,13 @@ jobs:
       - name: Render site
         run: quarto render
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
+      - name: Verify site output
+        run: test -d _site && test -n "$(ls -A _site 2>/dev/null)" || (echo "_site missing or empty" && exit 1)
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          force_orphan: false
