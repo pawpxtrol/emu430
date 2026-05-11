@@ -101,6 +101,52 @@ ssh -T git@github.com
 
 You should see: `Hi pawpatrol! You've successfully authenticated...`
 
+### `Permission ... denied to pawpxtroller` (wrong GitHub account)
+
+If the error says **`denied to pawpxtroller`** but the repo is **`pawpatrol/simply-scheme`**, your Mac is using an SSH key that is registered on **`pawpxtroller`**, not **`pawpatrol`**. GitHub will reject the push.
+
+**Pick one:**
+
+1. **Use a dedicated SSH key for `pawpatrol`.** GitHub does **not** allow the same public key on two different users. If your current key is on **`pawpxtroller`**, create a **new** key pair, add **only** the new `.pub` file to **`pawpatrol`** → SSH keys, then use the SSH config in (2) so this repo uses that key.
+
+2. **`~/.ssh/config` host alias** (recommended when you have two accounts):
+
+   ```text
+   Host github.com-pawpatrol
+     HostName github.com
+     User git
+     IdentityFile ~/.ssh/id_ed25519_pawpatrol
+     IdentitiesOnly yes
+
+   Host github.com
+     HostName github.com
+     User git
+     IdentityFile ~/.ssh/id_ed25519_github
+     IdentitiesOnly yes
+   ```
+
+   - Create **`~/.ssh/id_ed25519_pawpatrol`** (new key), add **only** `id_ed25519_pawpatrol.pub` to **`pawpatrol`** → SSH keys.  
+   - Point this repo at the host alias:
+
+   ```bash
+   cd /Users/talyat/Documents/mateo_project/emu430
+   git remote set-url origin git@github.com-pawpatrol:pawpatrol/simply-scheme.git
+   ssh -T git@github.com-pawpatrol   # should say Hi pawpatrol!
+   ./scripts/git-push-terminal.sh
+   ```
+
+3. **Add `pawpxtroller` as a collaborator** on **`pawpatrol/simply-scheme`** (Write access). Then pushing as `pawpxtroller` works without moving the repo.
+
+### `couldn't find remote ref main`
+
+The GitHub repo may use **`master`** as default, or be empty. Check:
+
+```bash
+git ls-remote --heads origin
+```
+
+If you see **`refs/heads/master`** but no `main`, either push with `git push -u origin main:master` or rename: `git push -u origin main` after creating `main` on remote — or `git branch -M main` and force push if you intend to replace the default branch.
+
 ## Copy into your team repository
 
 **Option A — this folder becomes the repo root:** initialize git here (or clone your empty team repo and copy these files in).
