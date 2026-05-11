@@ -8,9 +8,9 @@ project:
 
 website:
   title: "Paw Patrol — Street animal feeding (Ankara)"
-  # GitHub: pawpatrol / simply-scheme (project site + Pages URL)
-  site-url: https://pawpatrol.github.io/simply-scheme/
-  repo-url: https://github.com/pawpatrol/simply-scheme
+  # GitHub org pawpxtrol / repo emu430 (Pages URL uses org name)
+  site-url: https://pawpxtrol.github.io/emu430/
+  repo-url: https://github.com/pawpxtrol/emu430
   navbar:
     left:
       - href: index.qmd

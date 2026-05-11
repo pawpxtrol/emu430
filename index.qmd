@@ -14,7 +14,7 @@ subtitle: "EMU430 — Team Paw Patrol"
 
 *Teams are typically **4–6** students: add or remove rows so every member has a **working link** to their **Assignment 1** GitHub profile (final deliverable PDF). Replace placeholders when accounts exist.*
 
-**GitHub site URLs:** `_quarto.yml` uses repo **`pawpatrol/simply-scheme`** → **`https://pawpatrol.github.io/simply-scheme/`**. If you switch repos later, update **both** URLs in `_quarto.yml`.
+**GitHub site URLs:** `_quarto.yml` uses org **`pawpxtrol`**, repo **`emu430`** → **`https://pawpxtrol.github.io/emu430/`**. If you rename the repo, update **both** URLs in `_quarto.yml`.
 
 ## Project summary
 

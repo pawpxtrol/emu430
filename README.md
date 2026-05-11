@@ -10,27 +10,44 @@ This folder is a **complete starter** for the EMU430 team website: **Home**, **D
 
 **Course list:** the final deliverable PDF listed **fixed GitHub team names** (e.g. `team_petra`, `rhapsody`, …). If your instructor assigned you to one of those names, use that name for the **GitHub Classroom team / repo**, and keep **“Paw Patrol”** as your **project title** on the site. If the instructor approved **Paw Patrol** as the official team name, you are fine using it everywhere.
 
-## GitHub account **pawpatrol** / repo **`simply-scheme`**
+## GitHub organization **pawpxtrol** / repo **`emu430`**
 
-`_quarto.yml` is set for **`https://github.com/pawpatrol/simply-scheme`** and Pages **`https://pawpatrol.github.io/simply-scheme/`**. Your **local folder** can still be named `emu430` on disk; only the **GitHub repo name** matters for the remote and URLs.
+Your screenshot shows org **`pawpxtrol`** with **no repositories yet**. This project is wired to:
 
-**Heads-up:** `simply-scheme` already exists with older content. The first push of this project may require merging histories or a **force push** (which **overwrites** the old default branch). Back up anything you still need from that repo before replacing it.
+- **Repo:** `https://github.com/pawpxtrol/emu430`
+- **Pages (after Actions):** `https://pawpxtrol.github.io/emu430/`
 
-Teammates add their **Assignment 1** profile links in `index.qmd`; they do not need to own the repo.
+(`_quarto.yml` already matches.) Your **local folder** can stay `.../mateo_project/emu430` on disk.
+
+**Create the repo (you must run this once on your Mac — GitHub needs *your* login):**
+
+1. **Option A — website:** on `github.com/pawpxtrol`, green **New repository** → name **`emu430`** → Public → **no** README → Create.
+2. **Option B — terminal (recommended):**
+
+   ```bash
+   gh auth login
+   cd /Users/talyat/Documents/mateo_project/emu430
+   chmod +x scripts/create-repo-pawpxtrol.sh
+   bash scripts/create-repo-pawpxtrol.sh
+   ./scripts/git-push-terminal.sh
+   ```
+
+The script creates **`pawpxtrol/emu430`** if missing, sets `origin` to **`git@github.com:pawpxtrol/emu430.git`**, then you push.
+
+**SSH:** the key must belong to a **GitHub user who is a member of `pawpxtrol`** with permission to push (org Owner is fine). `ssh -T git@github.com` shows your **username**, not the org name — that is normal.
+
+Teammates add **Assignment 1** profile links in `index.qmd`.
 
 ## New personal GitHub account (optional)
 
-1. Sign up at [github.com/signup](https://github.com/signup) if you still need an individual account.
-2. **Username:** letters, numbers, hyphens — **no spaces**. Display name can stay **Paw Patrol** in [Profile settings](https://github.com/settings/profile).
-3. Remote target is **`github.com/pawpatrol/simply-scheme`** (existing repo).
-4. Push from Terminal (see below), then enable **Pages** from **`gh-pages`** after the first successful workflow run.
+Only if someone on the team still needs an account: [github.com/signup](https://github.com/signup), then the org owner invites them to **`pawpxtrol`**.
 
 ## What you must provide (fill-in checklist)
 
 | Item | Where to put it |
 |------|------------------|
 | **Official data URL** + access date + attribution | `data.qmd` (“Source and citation”) |
-| **Team / repo URLs** | **`pawpatrol/simply-scheme`** in `_quarto.yml` (live site: `pawpatrol.github.io/simply-scheme`) |
+| **Team / repo URLs** | **`pawpxtrol/emu430`** in `_quarto.yml` (site: `pawpxtrol.github.io/emu430`) |
 | **All member names** + **GitHub profile URLs** (Assignment 1) | `index.qmd` team table |
 | **Course personal page** | Link from your EMU430 menu page **to** this published site |
 | **AI use** (if any) | Mark sections + footnote with prompt (course rule) on any page you used AI for wording |
@@ -38,114 +55,40 @@ Teammates add their **Assignment 1** profile links in `index.qmd`; they do not n
 
 If anything in the raw file changes, replace `data/raw/hayvan_besleme_2024_07.xlsx` and re-run `Rscript R/prepare_data.R`.
 
-## Push fails with `401` / `Missing or invalid credentials` (Cursor)
+## Push fails with `401` / Cursor `GIT_ASKPASS`
 
-Cursor sets **`GIT_ASKPASS`** to an internal helper; it often breaks **`git push`** over HTTPS to GitHub.
+Use **Terminal.app**, not Cursor’s Git UI, and run **`./scripts/git-push-terminal.sh`** (it unsets `GIT_ASKPASS`).
 
-**Do this:**
+Remote should be:
 
-1. Remote must be **`pawpatrol/simply-scheme`**. Set it once:
-
-   ```bash
-   cd /Users/talyat/Documents/mateo_project/emu430
-   git remote set-url origin git@github.com:pawpatrol/simply-scheme.git
-   ```
-
-   If the old repo has a different history, either merge (`git pull origin main --allow-unrelated-histories` then resolve) or **force** (destructive): `git push -u origin main --force` — only after backing up the old repo.
-
-2. Open **Terminal.app** (Apple’s Terminal, not Cursor’s tab).
-3. Run:
-
-   ```bash
-   cd /Users/talyat/Documents/mateo_project/emu430
-   chmod +x scripts/git-push-terminal.sh
-   ./scripts/git-push-terminal.sh
-   ```
-
-   The script **unsets** `GIT_ASKPASS` so macOS can use **Keychain** or prompt in the terminal.
-
-4. If Git still asks for a password: GitHub no longer accepts account passwords over HTTPS. Use a **[Personal Access Token](https://github.com/settings/tokens)** as the password, or switch to SSH:
-
-   ```bash
-   git remote set-url origin git@github.com:pawpatrol/simply-scheme.git
-   ssh -T git@github.com    # must say “Hi pawpatrol!”
-   ./scripts/git-push-terminal.sh
-   ```
-
-5. Or use **GitHub CLI** once, then push from Terminal:
-
-   ```bash
-   gh auth login
-   gh auth setup-git
-   cd /Users/talyat/Documents/mateo_project/emu430
-   ./scripts/git-push-terminal.sh
-   ```
+```bash
+cd /Users/talyat/Documents/mateo_project/emu430
+git remote set-url origin git@github.com:pawpxtrol/emu430.git
+```
 
 ### SSH: `Permission denied (publickey)`
 
-GitHub only accepts SSH if this Mac has an **SSH key** and you paste its **public** key into GitHub while logged in as **`pawpatrol`**: **Settings → SSH and GPG keys → New SSH key**.
-
-**Quick setup** (Terminal.app):
+Generate a key and add the **`.pub`** file to the GitHub account that has access to org **`pawpxtrol`**:
 
 ```bash
 cd /Users/talyat/Documents/mateo_project/emu430
 bash scripts/setup-github-ssh.sh
 ```
 
-Copy the **one line** it prints → GitHub → New SSH key → save. Then:
+Paste the printed line at **GitHub → Settings → SSH keys** (while logged in as the user who is in **`pawpxtrol`**). Then:
 
 ```bash
 ssh -T git@github.com
 ./scripts/git-push-terminal.sh
 ```
 
-You should see: `Hi pawpatrol! You've successfully authenticated...`
+### `Permission ... denied to <username>` (no access to org repo)
 
-### `Permission ... denied to pawpxtroller` (wrong GitHub account)
-
-If the error says **`denied to pawpxtroller`** but the repo is **`pawpatrol/simply-scheme`**, your Mac is using an SSH key that is registered on **`pawpxtroller`**, not **`pawpatrol`**. GitHub will reject the push.
-
-**Pick one:**
-
-1. **Use a dedicated SSH key for `pawpatrol`.** GitHub does **not** allow the same public key on two different users. If your current key is on **`pawpxtroller`**, create a **new** key pair, add **only** the new `.pub` file to **`pawpatrol`** → SSH keys, then use the SSH config in (2) so this repo uses that key.
-
-2. **`~/.ssh/config` host alias** (recommended when you have two accounts):
-
-   ```text
-   Host github.com-pawpatrol
-     HostName github.com
-     User git
-     IdentityFile ~/.ssh/id_ed25519_pawpatrol
-     IdentitiesOnly yes
-
-   Host github.com
-     HostName github.com
-     User git
-     IdentityFile ~/.ssh/id_ed25519_github
-     IdentitiesOnly yes
-   ```
-
-   - Create **`~/.ssh/id_ed25519_pawpatrol`** (new key), add **only** `id_ed25519_pawpatrol.pub` to **`pawpatrol`** → SSH keys.  
-   - Point this repo at the host alias:
-
-   ```bash
-   cd /Users/talyat/Documents/mateo_project/emu430
-   git remote set-url origin git@github.com-pawpatrol:pawpatrol/simply-scheme.git
-   ssh -T git@github.com-pawpatrol   # should say Hi pawpatrol!
-   ./scripts/git-push-terminal.sh
-   ```
-
-3. **Add `pawpxtroller` as a collaborator** on **`pawpatrol/simply-scheme`** (Write access). Then pushing as `pawpxtroller` works without moving the repo.
+That user must be **invited to the `pawpxtrol` organization** (or given write access on **`emu430`**). Keys are per **user**, not per org.
 
 ### `couldn't find remote ref main`
 
-The GitHub repo may use **`master`** as default, or be empty. Check:
-
-```bash
-git ls-remote --heads origin
-```
-
-If you see **`refs/heads/master`** but no `main`, either push with `git push -u origin main:master` or rename: `git push -u origin main` after creating `main` on remote — or `git branch -M main` and force push if you intend to replace the default branch.
+Empty new repo has no `main` yet — a normal **`git push -u origin main`** after creation is enough. If the remote only has **`master`**, run `git ls-remote --heads origin` and use `git push -u origin main:master` if needed.
 
 ## Copy into your team repository
 
