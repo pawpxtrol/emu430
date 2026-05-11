@@ -45,6 +45,17 @@ feeding |>
 
 The monthly workbooks **do not always report every calendar day**, so `distinct_days` is well below the calendar maximum. We treat that as a reporting feature rather than imputing days.
 
+One row in the **October 2024** workbook carries an obvious **`2022-10-18`** date (a source typo). It stays in `feeding` for traceability and shows up in the coverage table above, but we **exclude it from the time-axis charts below** so the monthly axis spans only the actual reporting window (**Jul 2024 → Jun 2025**).
+
+```{r}
+#| label: feeding-ts
+#| include: false
+
+# Time-series view: drop the lone 2022 typo row so the date axis is clean.
+feeding_ts <- feeding |>
+  filter(tarih >= as.Date("2024-01-01"))
+```
+
 ## Monthly volume
 
 How many records per month, and how much dry food (kg) was reported per month?
@@ -54,7 +65,7 @@ How many records per month, and how much dry food (kg) was reported per month?
 #| fig-cap: "Records per month and total reported kg of dry food per month."
 #| fig-height: 6
 
-monthly <- feeding |>
+monthly <- feeding_ts |>
   filter(!is.na(tarih)) |>
   mutate(month_start = lubridate::floor_date(tarih, "month")) |>
   group_by(month_start) |>
@@ -159,7 +170,7 @@ top5 <- feeding |>
   slice_head(n = 5) |>
   pull(ilce)
 
-feeding_top <- feeding |>
+feeding_top <- feeding_ts |>
   filter(ilce %in% top5, !is.na(tarih)) |>
   mutate(month_start = lubridate::floor_date(tarih, "month")) |>
   group_by(ilce, month_start) |>
@@ -201,7 +212,7 @@ feeding |>
 #| label: fig-by-day
 #| fig-cap: "Number of records per calendar day across the full reporting window."
 
-daily <- feeding |>
+daily <- feeding_ts |>
   filter(!is.na(tarih)) |>
   mutate(day = as.Date(tarih)) |>
   count(day, name = "rows")
