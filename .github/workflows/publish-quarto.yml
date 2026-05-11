@@ -42,6 +42,7 @@ jobs:
             any::stringr
             any::readr
             any::here
+            any::purrr
             any::ggplot2
             any::scales
             any::lubridate

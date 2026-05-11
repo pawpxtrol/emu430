@@ -4,11 +4,11 @@ title: "Analysis"
 
 ## Key takeaways
 
-- **Topic:** July **2024** **street-animal feeding** operations across **Ankara ilçeler**, from health-directorate-style operational records.
-- **Data:** **367** neighborhood-day records with feeding-point counts and **kg/day** dry food averages, plus vehicle and personnel fields.
-- **Important aspects:** **District names** needed trimming; **food** was text-encoded; **vehicle** column mixes numbers, `"-"`, and a **`Y3`** typo.
-- **Interesting results:** **Çankaya**, **Keçiören**, and **Mamak** dominate row counts; **kg/day per record** is right-skewed with a long tail of large feeding averages.
-- **Main outcome:** Clear **district comparisons** and **temporal coverage** (26 distinct calendar days in July) support a discussion of **resource concentration** and **data quality** for policy narratives.
+- **Topic:** **Street-animal feeding** operations across **Ankara districts (`ilçeler`)** from **July 2024 to June 2025**, based on monthly health-directorate operational records.
+- **Data:** ~3,700+ neighborhood-day records aggregated from **11 monthly workbooks**, with feeding-point counts, **kg/day** of dry food, and vehicle / personnel staffing.
+- **Important aspects:** District names needed trimming; food / dates / staff fields were **text-encoded** with inconsistent formats (March 2025 dates as `"1.03.2025"`, vehicles as `"-"` or the typo `"Y3"`).
+- **Interesting results:** A handful of districts (notably **Çankaya**, **Keçiören**, **Mamak**) dominate row counts; **monthly totals fluctuate**, and the kg-per-record distribution is **right-skewed** with consolidated large drops in the tail.
+- **Main outcome:** A reproducible **Quarto + R** pipeline plus a publicly downloadable cleaned `.RData` enabling year-scale district comparisons and discussion of **resource concentration and data quality** in municipal animal-welfare operations.
 
 ```{r}
 #| label: setup
@@ -30,25 +30,70 @@ load(here::here("data", "feeding_clean.RData"))
 
 feeding |>
   summarise(
-    rows = n(),
-    first_day = min(tarih, na.rm = TRUE),
-    last_day = max(tarih, na.rm = TRUE),
-    distinct_days = n_distinct(as.Date(tarih)),
-    distinct_ilce = n_distinct(ilce),
-    missing_mama = sum(is.na(mama_kg)),
-    missing_arac = sum(is.na(arac_sayisi)),
-    missing_personel = sum(is.na(personel_sayisi))
+    rows               = n(),
+    months             = n_distinct(yil_ay),
+    first_day          = min(tarih, na.rm = TRUE),
+    last_day           = max(tarih, na.rm = TRUE),
+    distinct_days      = n_distinct(as.Date(tarih)),
+    distinct_ilce      = n_distinct(ilce),
+    missing_mama       = sum(is.na(mama_kg)),
+    missing_arac       = sum(is.na(arac_sayisi)),
+    missing_personel   = sum(is.na(personel_sayisi))
   ) |>
-  knitr::kable(caption = "Dataset coverage and missingness")
+  knitr::kable(caption = "Dataset coverage and missingness across all months")
 ```
 
-The source table does not always include **every calendar day** in July (`distinct_days` \< 31). That is a **reporting / data collection** feature to mention in your presentation, not something we impute.
+The monthly workbooks **do not always report every calendar day**, so `distinct_days` is well below the calendar maximum. We treat that as a reporting feature rather than imputing days.
+
+## Monthly volume
+
+How many records per month, and how much dry food (kg) was reported per month?
+
+```{r}
+#| label: fig-monthly
+#| fig-cap: "Records per month and total reported kg of dry food per month."
+#| fig-height: 6
+
+monthly <- feeding |>
+  filter(!is.na(tarih)) |>
+  mutate(month_start = lubridate::floor_date(tarih, "month")) |>
+  group_by(month_start) |>
+  summarise(
+    rows = n(),
+    total_kg = sum(mama_kg, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(month_start)
+
+p1 <- ggplot(monthly, aes(month_start, rows)) +
+  geom_col(fill = "#2E86AB") +
+  scale_x_date(date_labels = "%b %Y", date_breaks = "1 month") +
+  labs(x = NULL, y = "Records per month") +
+  theme_minimal(base_size = 12) +
+  theme(axis.text.x = element_text(angle = 35, hjust = 1))
+
+p2 <- ggplot(monthly, aes(month_start, total_kg)) +
+  geom_col(fill = "#A23B72") +
+  scale_x_date(date_labels = "%b %Y", date_breaks = "1 month") +
+  scale_y_continuous(labels = label_number(suffix = " kg", big.mark = ",")) +
+  labs(x = NULL, y = "Reported dry food (kg / month)") +
+  theme_minimal(base_size = 12) +
+  theme(axis.text.x = element_text(angle = 35, hjust = 1))
+
+p1
+p2
+```
+
+Two complementary views:
+
+- The **record count** reflects how many neighborhood-days were filed that month — partly a function of reporting effort.
+- The **kg total** reflects the actual feeding workload (after parsing strings like `"84 KG"`).
 
 ## District activity (row counts)
 
 ```{r}
 #| label: fig-rows-ilce
-#| fig-cap: "Number of neighborhood-day records per district (ilçe)."
+#| fig-cap: "Number of neighborhood-day records per district across the full year."
 
 ilce_counts <- feeding |>
   count(ilce, name = "rows") |>
@@ -57,7 +102,7 @@ ilce_counts <- feeding |>
 ggplot(ilce_counts, aes(x = ilce, y = rows)) +
   geom_col(fill = "#2E86AB") +
   coord_flip() +
-  labs(x = NULL, y = "Rows (mahalle × day)") +
+  labs(x = NULL, y = "Rows (mahalle × day, all months)") +
   theme_minimal(base_size = 12) +
   theme(panel.grid.major.y = element_blank())
 ```
@@ -66,79 +111,118 @@ ggplot(ilce_counts, aes(x = ilce, y = rows)) +
 
 ```{r}
 #| label: fig-mama-hist
-#| fig-cap: "Histogram of parsed average dry food (kg/day) per record."
+#| fig-cap: "Histogram of parsed daily dry food per record (kg)."
 
-ggplot(feeding, aes(x = mama_kg)) +
-  geom_histogram(fill = "#A23B72", color = "white", bins = 30, boundary = 0) +
+ggplot(feeding |> filter(!is.na(mama_kg)), aes(x = mama_kg)) +
+  geom_histogram(fill = "#A23B72", color = "white", bins = 40, boundary = 0) +
+  scale_x_continuous(labels = label_number(suffix = " kg")) +
   labs(x = "kg/day (parsed)", y = "Count") +
   theme_minimal(base_size = 12)
 ```
+
+The distribution is **right-skewed**: most records are modest (low single-digit to tens of kg), but a long tail of larger consolidated deliveries pulls the mean up.
 
 ## District comparison of kg/day
 
 ```{r}
 #| label: fig-mama-ilce
-#| fig-cap: "Distribution of kg/day by district for districts with at least 15 records."
+#| fig-cap: "Distribution of kg/day by district (districts with ≥ 50 records across the year)."
 
 big_ilce <- feeding |>
   count(ilce) |>
-  filter(n >= 15) |>
+  filter(n >= 50) |>
   pull(ilce)
 
 feeding_sub <- feeding |>
-  filter(ilce %in% big_ilce) |>
+  filter(ilce %in% big_ilce, !is.na(mama_kg)) |>
   mutate(ilce = stats::reorder(factor(ilce), mama_kg, FUN = median, na.rm = TRUE))
 
 ggplot(feeding_sub, aes(x = ilce, y = mama_kg)) +
-  geom_boxplot(outlier.alpha = 0.35, fill = "#F18F01") +
+  geom_boxplot(outlier.alpha = 0.3, fill = "#F18F01") +
   coord_flip() +
   scale_y_continuous(labels = label_number(suffix = " kg")) +
   labs(x = NULL, y = "Average dry food (kg/day)") +
   theme_minimal(base_size = 12)
 ```
 
+## Top districts over time
+
+How does the **monthly kg total** vary across the top five districts (by record count)?
+
+```{r}
+#| label: fig-ilce-time
+#| fig-cap: "Monthly total kg of dry food for the five most-reported districts."
+#| fig-height: 5
+
+top5 <- feeding |>
+  count(ilce, sort = TRUE) |>
+  slice_head(n = 5) |>
+  pull(ilce)
+
+feeding_top <- feeding |>
+  filter(ilce %in% top5, !is.na(tarih)) |>
+  mutate(month_start = lubridate::floor_date(tarih, "month")) |>
+  group_by(ilce, month_start) |>
+  summarise(total_kg = sum(mama_kg, na.rm = TRUE), .groups = "drop")
+
+ggplot(feeding_top, aes(month_start, total_kg, color = ilce)) +
+  geom_line(linewidth = 0.9) +
+  geom_point(size = 1.8) +
+  scale_x_date(date_labels = "%b %Y", date_breaks = "1 month") +
+  scale_y_continuous(labels = label_number(suffix = " kg", big.mark = ",")) +
+  labs(x = NULL, y = "Total reported kg / month", color = "İlçe") +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.text.x = element_text(angle = 35, hjust = 1),
+    legend.position = "bottom"
+  )
+```
+
 ## Vehicles and personnel
 
-These columns were **mostly constant** in the July extract (many rows share the same small integers), with **`"-"` coded gaps**. Your write-up should interpret them cautiously: they may reflect **fleet / staffing assumptions** in reporting rather than precise daily counts.
+These columns are **low-variance** (often constant within a month) and frequently use `"-"` for missing values, so they describe *fleet / staffing assumptions* more than precise daily counts.
 
 ```{r}
 #| label: tbl-staff
 
 feeding |>
   summarise(
-    arac_distinct = n_distinct(arac_sayisi, na.rm = TRUE),
-    personel_distinct = n_distinct(personel_sayisi, na.rm = TRUE),
-    share_arac_missing = mean(is.na(arac_sayisi)),
+    arac_distinct          = n_distinct(arac_sayisi, na.rm = TRUE),
+    personel_distinct      = n_distinct(personel_sayisi, na.rm = TRUE),
+    share_arac_missing     = mean(is.na(arac_sayisi)),
     share_personel_missing = mean(is.na(personel_sayisi))
   ) |>
-  knitr::kable(digits = 3)
+  knitr::kable(digits = 3, caption = "Vehicle and personnel coverage")
 ```
 
 ## Observations per day
 
 ```{r}
 #| label: fig-by-day
-#| fig-cap: "Number of records per calendar day."
+#| fig-cap: "Number of records per calendar day across the full reporting window."
 
 daily <- feeding |>
+  filter(!is.na(tarih)) |>
   mutate(day = as.Date(tarih)) |>
   count(day, name = "rows")
 
 ggplot(daily, aes(x = day, y = rows)) +
-  geom_line(color = "#C73E1D", linewidth = 0.8) +
-  geom_point(color = "#C73E1D", size = 2) +
-  scale_x_date(date_labels = "%d %b", date_breaks = "3 days") +
+  geom_line(color = "#C73E1D", linewidth = 0.5, alpha = 0.6) +
+  geom_point(color = "#C73E1D", size = 1.2, alpha = 0.7) +
+  scale_x_date(date_labels = "%b %Y", date_breaks = "1 month") +
   labs(x = NULL, y = "Rows per day") +
   theme_minimal(base_size = 12) +
   theme(axis.text.x = element_text(angle = 35, hjust = 1))
 ```
 
-## Conclusions (for your narrative)
+## Conclusions
 
-- **Spatial concentration:** A few districts account for most neighborhood-day rows — tie this to population, urban form, or program emphasis **only as hypotheses** unless you merge external data.
-- **Skewed feeding amounts:** A long right tail suggests a mix of **small local drops** and **larger consolidated deliveries**; outliers deserve qualitative mention.
-- **Operational fields:** Vehicle/personnel columns are **sparse / low-variance**; do not over-claim precision.
+- **Spatial concentration:** A handful of districts (Çankaya, Keçiören, Mamak and a few others) account for most of the reported activity. Tying this to population, urban form, or program emphasis remains a **hypothesis** without external data.
+- **Temporal patterns:** Monthly volume is uneven, partly driven by reporting effort rather than real demand. The kg totals are less sensitive to that and offer a more reliable workload proxy.
+- **Right-skewed food amounts:** A long upper tail represents **consolidated bulk feedings** at specific points; the median is a better summary than the mean.
+- **Operational fields:** Vehicle/personnel are too coarse to claim per-day precision — interpret as background fleet/staffing context.
+- **Data quality matters:** Different months use different date formats, and one row carries an obvious 2022 typo — a reminder that reproducible cleaning is part of the analysis, not a side concern.
 
-## AI use disclosure (if applicable)
+## AI use disclosure
 
-If you extend this analysis with AI-generated text, **label it** and add the **prompt in a footnote**; validate all numeric statements against the `feeding` object.
+If you extend this analysis with AI-generated text, **label that section** and include the **prompt as a footnote**; validate every numeric statement against the `feeding` object.

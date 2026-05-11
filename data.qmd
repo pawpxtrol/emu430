@@ -4,53 +4,62 @@ title: "Data"
 
 ## What this dataset is
 
-The workbook **`hayvan_besleme_2024_07.xlsx`** contains **July 2024** records of **street animal feeding** (`hayvan besleme`) associated with the **Ankara Provincial Health Directorate** animal-feeding reporting (Turkish: *Ankara İl Sağlık Müdürlüğü*, Sağlık Dairesi / ilçe sağlık operations — **replace this sentence with the exact portal or announcement URL you used**).
+This site analyzes **monthly street-animal feeding (`hayvan besleme`) records** from the **Ankara Provincial Health Directorate** (Turkish: *Ankara İl Sağlık Müdürlüğü*, Sağlık Dairesi). Each row is one **neighborhood-day** of operations across Ankara's districts (*ilçeler*).
 
-**Why we chose it:** It is real, public operational data, **Turkey-relevant**, large enough for EDA (**367** rows), and it connects to **urban policy** and **animal welfare** logistics.
+We combined **eleven monthly Excel workbooks** spanning **July 2024 through June 2025** into a single tidy dataset:
 
-**Objectives (data-focused):** Publish a fully reproducible import and cleaning pipeline; distribute a single cleaned object **`feeding`** as **`feeding_clean.RData`**.
+- 2024: July, September, October, November, December
+- 2025: January, February, March, April, May, June
 
-## Accomplishments (final deliverable — Data page)
+**Why we chose it:** real, public operational data; **Turkey-relevant**; large enough for time-series and cross-district EDA; and it touches **urban policy** and **animal welfare** logistics — a topic with current public-discourse relevance.
 
-The course asks you to **discuss accomplishments** on the Data page. Update this list before submission so it matches what you actually did:
+**Objectives (data-focused):**
 
-- Published a **documented, reproducible** path from the raw **`.xlsx`** to a single analysis-ready object **`feeding`** saved as **`feeding_clean.RData`**.
-- **Standardized** district and neighborhood labels (trimmed stray spaces) so counts by `ilce` are trustworthy.
-- **Parsed** text-encoded dry-food amounts into numeric **`mama_kg`**, and normalized **vehicle** / **personnel** fields (including **`Y3` → 3** and **`-` → missing**).
-- **Did not drop rows** for missing vehicle/personnel; all **367** raw rows remain in **`feeding`** so graders can reconcile with the spreadsheet. (If you later choose to exclude rows for a robustness check, describe that in a separate subsection and justify it.)
+1. Publish a **reproducible** pipeline from many raw `.xlsx` files to a single tidy object `feeding`.
+2. Make the cleaned dataset publicly available as **`feeding_clean.RData`**.
+3. Document **data-quality issues** (mixed date formats, text-encoded numbers, coded missing values, typos, source outliers).
+
+## Accomplishments
+
+- Combined **11 monthly workbooks** (≈ 3,700+ neighborhood-day rows) into one tibble `feeding`.
+- **Standardized** district / neighborhood labels (trimmed stray spaces such as `"GÖLBAŞI "`).
+- **Parsed mixed date formats** — most files use Excel dates; **March 2025** stored them as strings like `"1.03.2025"`. Both formats are handled by `parse_mixed_date()`.
+- **Parsed** text-encoded dry-food amounts into numeric **`mama_kg`** (e.g. `"84 KG"` → `84`).
+- **Normalized vehicle / personnel** fields: **`Y3` → 3**, **`-` → missing**, blank → missing.
+- Added derived columns **`yil`**, **`ay`**, **`yil_ay`** so the analysis page can compare across months.
+- Kept a **`source_file`** column for traceability back to each monthly workbook.
 
 ## Source and citation
 
-1. **Edit this paragraph** with the precise download link, page title, and **access date**.
-2. If the file came from an open-data portal, cite that portal’s recommended attribution.
+The raw files are monthly publications from **Ankara Büyükşehir Belediyesi Sağlık Dairesi** ("Sağlık Dairesi Hayvan Besleme Verileri"). Replace this sentence on the deployed site with the **exact open-data portal URL** + **access date** before the final submission.
 
 ## Download cleaned data (course requirement)
 
-After you run `Rscript R/prepare_data.R` and render the site, the file is copied into the website output:
+After `Rscript R/prepare_data.R` and `quarto render`, the cleaned dataset is copied to the website:
 
-**[feeding_clean.RData](data/feeding_clean.RData)** — cleaned tibble `feeding` (see column definitions below).
-
-*(If the link 404s locally, run `quarto render` once after generating `data/feeding_clean.RData`.)*
+**[feeding_clean.RData](data/feeding_clean.RData)** — R object: `feeding` (one row per neighborhood-day).
 
 ## Import and preparation
 
-**Raw file location in this repository:** `data/raw/hayvan_besleme_2024_07.xlsx` (copy from your Downloads if missing).
+**Raw files location in this repository:** `data/raw/hayvan_besleme_YYYY_MM.xlsx` (one workbook per month).
 
-**Steps (mirrors `R/prepare_data.R`):**
+**Pipeline (mirrors `R/prepare_data.R`):**
 
-1. **Read** the Excel sheet with fixed column types (date + text + numeric) so Turkish headers do not depend on `janitor` transliteration.
-2. **Rename** columns to ASCII snake_case: `tarih`, `ilce`, `mahalle_sokak`, `besleme_noktasi_sayisi`, `mama_text`, `arac_text`, `personel_text`.
-3. **Trim** extra spaces in `ilce` and `mahalle_sokak` (the raw file contains values like `"GÖLBAŞI "` with a trailing space).
-4. **Parse food mass:** extract numeric **kg** from strings such as `"84 KG"` → `mama_kg`.
-5. **Parse vehicles:** `"-"` → missing; `"Y3"` (typo) → **3**; otherwise parse as number.
-6. **Parse personnel:** `"-"` → missing; otherwise parse as number.
-7. **Save** `feeding` to `data/feeding_clean.RData`.
+1. **Auto-discover** every file under `data/raw/` matching `hayvan_besleme_*.xlsx`.
+2. **Read** each workbook with all columns as text (so we control coercion ourselves).
+3. **Rename** the seven columns to ASCII snake_case: `tarih`, `ilce`, `mahalle_sokak`, `besleme_noktasi_sayisi`, `mama_kg`, `arac_sayisi`, `personel_sayisi`, plus the metadata column `source_file`.
+4. **Parse dates** via `parse_mixed_date()` — accepts Excel `Date`/`POSIXct` values and DMY strings (`"1.03.2025"`).
+5. **Trim** extra spaces in `ilce` and `mahalle_sokak`.
+6. **Parse food mass** with `readr::parse_number()` (extracts the leading kg figure).
+7. **Parse vehicles:** `"-"` → `NA`; `"Y3"` (typo) → `3`; otherwise numeric.
+8. **Parse personnel:** `"-"` → `NA`; otherwise numeric.
+9. **Combine** with `purrr::map_dfr()`, drop rows whose date failed to parse, add `yil` / `ay` / `yil_ay`, and **save** `feeding` to `data/feeding_clean.RData`.
 
 ```{r}
 #| label: show-prepare
 #| eval: false
 
-# Run in terminal from project root (not inside Quarto usually):
+# Run from the project root once when raw files change:
 # Rscript R/prepare_data.R
 ```
 
@@ -58,14 +67,24 @@ After you run `Rscript R/prepare_data.R` and render the site, the file is copied
 
 | Column | Description |
 |--------|-------------|
-| `tarih` | Calendar date of the record (July 2024). |
+| `tarih` | Calendar date of the record (`Date`). |
 | `ilce` | Ankara **district** (*ilçe*). |
 | `mahalle_sokak` | Neighborhood / street (*mahalle / sokak*). |
-| `besleme_noktasi_sayisi` | Count of **feeding points** that day in that row’s scope. |
-| `mama_kg` | **Average daily dry food** at those points, in **kg** (parsed from text). |
-| `arac_sayisi` | **Vehicles** involved in feeding operations (daily average field in source; see Analysis for variability). |
-| `personel_sayisi` | **Personnel** count field from the sheet. |
+| `besleme_noktasi_sayisi` | Count of **feeding points** that day in that row's scope. |
+| `mama_kg` | **Average daily dry food**, in **kg** (parsed from text). |
+| `arac_sayisi` | **Vehicles** involved in feeding (daily average field in source). |
+| `personel_sayisi` | **Personnel** field from the sheet (daily average). |
+| `yil` | Year (`int`). |
+| `ay` | Month number 1–12. |
+| `yil_ay` | `YYYY-MM` for monthly groupings. |
+| `source_file` | Which raw workbook the row came from. |
 
-## AI use disclosure (if applicable)
+## Known data-quality notes
 
-If any **wording** on this page was drafted with an AI assistant, **mark that paragraph** and add a **footnote with the prompt** (course rule). Verify all statements against the raw file.
+- **October 2024** workbook contains one row dated **2022-10-18** (clearly a source typo). It is kept in `feeding`; tag/filter it before yearly aggregations if needed.
+- **March 2025** dates are stored as Turkish DMY strings.
+- Vehicle / personnel columns are **low-variance** and frequently use `"-"` for missing — interpret cautiously.
+
+## AI use disclosure
+
+If you extend any wording on this page with an AI assistant, **mark that paragraph** and add a **footnote with the prompt** (course ethics rule). Verify every quantitative statement against the `feeding` object.
