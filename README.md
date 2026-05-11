@@ -71,6 +71,26 @@ Cursor sets **`GIT_ASKPASS`** to an internal helper; it often breaks **`git push
    ./scripts/git-push-terminal.sh
    ```
 
+### SSH: `Permission denied (publickey)`
+
+GitHub only accepts SSH if this Mac has an **SSH key** and you paste its **public** key into GitHub while logged in as **`pawpatrol`**: **Settings → SSH and GPG keys → New SSH key**.
+
+**Quick setup** (Terminal.app):
+
+```bash
+cd /Users/talyat/Documents/mateo_project/emu430
+bash scripts/setup-github-ssh.sh
+```
+
+Copy the **one line** it prints → GitHub → New SSH key → save. Then:
+
+```bash
+ssh -T git@github.com
+./scripts/git-push-terminal.sh
+```
+
+You should see: `Hi pawpatrol! You've successfully authenticated...`
+
 ## Copy into your team repository
 
 **Option A — this folder becomes the repo root:** initialize git here (or clone your empty team repo and copy these files in).
