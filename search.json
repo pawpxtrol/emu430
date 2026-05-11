@@ -1,0 +1,289 @@
+[
+  {
+    "objectID": "COURSE_COMPLIANCE.html",
+    "href": "COURSE_COMPLIANCE.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "COURSE_COMPLIANCE.html#final-deliverable-pdf",
+    "href": "COURSE_COMPLIANCE.html#final-deliverable-pdf",
+    "title": "",
+    "section": "Final deliverable PDF",
+    "text": "Final deliverable PDF\n\n\n\n\n\n\n\n\nRequirement\nStatus\nWhere / notes\n\n\n\n\nGitHub team invitation; first acceptor creates team from listed names\nYou\nNames: team_petra, rhapsody, nrg, … analytica. Align Classroom team/repo with that list unless instructor approved otherwise (e.g. display name Paw Patrol only on site).\n\n\nThree pages: home, data, analysis\nMet\nindex.qmd, data.qmd, analysis.qmd + navbar in _quarto.yml.\n\n\nHome: team name, members, project title, short description\nMet / You\nPaw Patrol + title on index.qmd; fill member names.\n\n\nMember names linked to Assignment 1 GitHub pages\nYou\nindex.qmd table — replace YOUR_USERNAME and empty links.\n\n\nPersonal coursework pages link to project + short description under Project menu\nYou\nNot in repo; each student edits their own site.\n\n\nEthics; borrow → direct link; AI → highlight + footnote with prompt\nMet / You\nREADME.md, footers on data.qmd / analysis.qmd; you mark any AI text.\n\n\nQuarto + GitHub Project Page + PDF to HADI\nMet / You\nHTML via Quarto + Pages workflow; PDF: add course YAML per page, render, merge, upload (README).\n\n\n~10 minute presentation; no PowerPoint; use project website\nYou\nRehearse from live Pages URL.\n\n\nText and code together in Quarto; code collapsible; outputs visible\nMet\nOne .qmd per page (standard for Quarto websites = “same file” per page). code-fold: true in _quarto.yml; tables/plots shown.\n\n\nData page: what data is; sources; choice; objectives; accomplishments\nMet / You\ndata.qmd — add real source URL; accomplishments section added.\n\n\nData page: import + prep; cleaning / NAs / etc.\nMet\ndata.qmd + R/prepare_data.R (trim ilçe, parse kg, vehicle/personnel; no row drops for NA — stated in Data page).\n\n\nData page: .RData + explicit download link\nMet\nfeeding_clean.RData, object feeding; link + resources in _quarto.yml.\n\n\nEDA: overview, columns, distributions, directions for further work\nMet\nanalysis.qmd (+ column table on Data page).\n\n\nStrong narrative; avoid shallow / repetitive code\nYou\nExtend prose before submit; tailor takeaways.\n\n\nKey takeaways 3–5 bullets: end of Home, start of Analysis; topic, data, important aspects, interesting results, main outcome\nMet\nFive bullets each on index.qmd and analysis.qmd.\n\n\nAnalysis page: styling, structure, not huge raw dumps\nMet / You\nTheme cosmo; keep outputs concise.\n\n\nMore words than bare code\nYou\nAdd interpretation before deadline.\n\n\nHTML + PDF from Quarto; each page to PDF or Word; merge if multiple PDFs\nYou\nInstructor YAML (sidebar: false, margins) — apply when rendering for HADI (README).\n\n\nOptional 1–2 min teaser video (+5)\nYou\nNot automated here."
+  },
+  {
+    "objectID": "COURSE_COMPLIANCE.html#initialization-guide-pdf-phase-1",
+    "href": "COURSE_COMPLIANCE.html#initialization-guide-pdf-phase-1",
+    "title": "",
+    "section": "Initialization guide PDF (Phase 1)",
+    "text": "Initialization guide PDF (Phase 1)\n\n\n\n\n\n\n\n\nRequirement\nStatus\nNotes\n\n\n\n\nTeams 4–6 students\nYou\nExtend index.qmd table if you have 5–6 people.\n\n\nR on real data; Quarto; GitHub\nMet\n\n\n\nData non-confidential; public at end; Turkey-related encouraged\nMet\nAnkara operational feeding data.\n\n\nDeliverable 1: single-page PDF on HADI by Apr 7, 2026\nYou\nSeparate from this website; one member submits for team.\n\n\nPrefer RData path raw → processed\nMet\nprepare_data.R → feeding_clean.RData.\n\n\nEthics / AI\nMet\nSame as final PDF."
+  },
+  {
+    "objectID": "COURSE_COMPLIANCE.html#conflicts-clarifications-between-the-two-pdfs",
+    "href": "COURSE_COMPLIANCE.html#conflicts-clarifications-between-the-two-pdfs",
+    "title": "",
+    "section": "Conflicts / clarifications between the two PDFs",
+    "text": "Conflicts / clarifications between the two PDFs\n\n\n\n\n\n\n\n\n\nTopic\nGuide PDF\nFinal PDF\nWhat to do\n\n\n\n\nPresentation length\n“5-minute” presentation + max 8-page conference paper (initialization doc, future phase wording)\n“10-minute” presentation; conference paper not repeated\nTreat 10 minutes and web project as binding for final unless the instructor says otherwise. Ask if you must also submit the 8-page paper."
+  },
+  {
+    "objectID": "COURSE_COMPLIANCE.html#dataset-vs-rprepare_data.r",
+    "href": "COURSE_COMPLIANCE.html#dataset-vs-rprepare_data.r",
+    "title": "",
+    "section": "Dataset vs R/prepare_data.R",
+    "text": "Dataset vs R/prepare_data.R\n\n\n\nExcel column\nHandled\n\n\n\n\nTARİH\n→ tarih (date)\n\n\nİLÇE\n→ ilce (trimmed)\n\n\nMAHALLE/SOKAK\n→ mahalle_sokak (trimmed)\n\n\nBESLEME NOKTASI SAYISI\n→ besleme_noktasi_sayisi\n\n\nKuru mama (text e.g. 84 KG)\n→ mama_kg\n\n\nAraç (e.g. 3, -, Y3)\n→ arac_sayisi\n\n\nPersonel (9, -)\n→ personel_sayisi"
+  },
+  {
+    "objectID": "COURSE_COMPLIANCE.html#github-pages-url-org-vs-user",
+    "href": "COURSE_COMPLIANCE.html#github-pages-url-org-vs-user",
+    "title": "",
+    "section": "GitHub Pages URL (org vs user)",
+    "text": "GitHub Pages URL (org vs user)\n\nUser repo: https://&lt;username&gt;.github.io/&lt;repo&gt;/\nOrganization repo: https://&lt;org&gt;.github.io/&lt;repo&gt;/\n\nSet site-url in _quarto.yml to the URL that actually opens your site after Pages is enabled."
+  },
+  {
+    "objectID": "COURSE_COMPLIANCE.html#files-you-should-still-edit-before-submission",
+    "href": "COURSE_COMPLIANCE.html#files-you-should-still-edit-before-submission",
+    "title": "",
+    "section": "Files you should still edit before submission",
+    "text": "Files you should still edit before submission\n\ndata.qmd — exact data source URL + access date.\n\nindex.qmd — all members + working GitHub profile links.\n\n_quarto.yml — site-url and repo-url.\n\nHADI — PDF bundle per instructor instructions.\n\nEach person’s course Project menu → link to this site."
+  },
+  {
+    "objectID": "WHAT_YOU_PROVIDE.html",
+    "href": "WHAT_YOU_PROVIDE.html",
+    "title": "",
+    "section": "",
+    "text": "Code\n\n\n\n\n\nOne-page checklist — what only you can provide\nUse this with README.md in the same folder. For a PDF-by-PDF audit, open COURSE_COMPLIANCE.md.\n\nExact download URL for the Excel file (portal or press release) + date accessed → paste into data.qmd.\nGitHub: org pawpxtrol, repo emu430 (see _quarto.yml). Create the repo with bash scripts/create-repo-pawpxtrol.sh after gh auth login, or use the green New repository button on the org. Confirm with the instructor whether the Classroom team name must match the official list while “Paw Patrol” is the project title on the site.\nEvery teammate’s name and GitHub profile link (from Assignment 1) → index.qmd table.\nLink from each personal coursework page back to the published project URL.\nHADI PDF: render per course instructions and upload yourself (not automated here).\nPresentation: rehearse using the live website (no PowerPoint per course).\n\nOptional: if you use AI for prose, highlight those paragraphs and add footnotes with prompts; re-check numbers against feeding."
+  },
+  {
+    "objectID": "data.html",
+    "href": "data.html",
+    "title": "Data",
+    "section": "",
+    "text": "The workbook hayvan_besleme_2024_07.xlsx contains July 2024 records of street animal feeding (hayvan besleme) associated with the Ankara Provincial Health Directorate animal-feeding reporting (Turkish: Ankara İl Sağlık Müdürlüğü, Sağlık Dairesi / ilçe sağlık operations — replace this sentence with the exact portal or announcement URL you used).\nWhy we chose it: It is real, public operational data, Turkey-relevant, large enough for EDA (367 rows), and it connects to urban policy and animal welfare logistics.\nObjectives (data-focused): Publish a fully reproducible import and cleaning pipeline; distribute a single cleaned object feeding as feeding_clean.RData."
+  },
+  {
+    "objectID": "data.html#what-this-dataset-is",
+    "href": "data.html#what-this-dataset-is",
+    "title": "Data",
+    "section": "",
+    "text": "The workbook hayvan_besleme_2024_07.xlsx contains July 2024 records of street animal feeding (hayvan besleme) associated with the Ankara Provincial Health Directorate animal-feeding reporting (Turkish: Ankara İl Sağlık Müdürlüğü, Sağlık Dairesi / ilçe sağlık operations — replace this sentence with the exact portal or announcement URL you used).\nWhy we chose it: It is real, public operational data, Turkey-relevant, large enough for EDA (367 rows), and it connects to urban policy and animal welfare logistics.\nObjectives (data-focused): Publish a fully reproducible import and cleaning pipeline; distribute a single cleaned object feeding as feeding_clean.RData."
+  },
+  {
+    "objectID": "data.html#accomplishments-final-deliverable-data-page",
+    "href": "data.html#accomplishments-final-deliverable-data-page",
+    "title": "Data",
+    "section": "Accomplishments (final deliverable — Data page)",
+    "text": "Accomplishments (final deliverable — Data page)\nThe course asks you to discuss accomplishments on the Data page. Update this list before submission so it matches what you actually did:\n\nPublished a documented, reproducible path from the raw .xlsx to a single analysis-ready object feeding saved as feeding_clean.RData.\nStandardized district and neighborhood labels (trimmed stray spaces) so counts by ilce are trustworthy.\nParsed text-encoded dry-food amounts into numeric mama_kg, and normalized vehicle / personnel fields (including Y3 → 3 and - → missing).\nDid not drop rows for missing vehicle/personnel; all 367 raw rows remain in feeding so graders can reconcile with the spreadsheet. (If you later choose to exclude rows for a robustness check, describe that in a separate subsection and justify it.)"
+  },
+  {
+    "objectID": "data.html#source-and-citation",
+    "href": "data.html#source-and-citation",
+    "title": "Data",
+    "section": "Source and citation",
+    "text": "Source and citation\n\nEdit this paragraph with the precise download link, page title, and access date.\nIf the file came from an open-data portal, cite that portal’s recommended attribution."
+  },
+  {
+    "objectID": "data.html#download-cleaned-data-course-requirement",
+    "href": "data.html#download-cleaned-data-course-requirement",
+    "title": "Data",
+    "section": "Download cleaned data (course requirement)",
+    "text": "Download cleaned data (course requirement)\nAfter you run Rscript R/prepare_data.R and render the site, the file is copied into the website output:\nfeeding_clean.RData — cleaned tibble feeding (see column definitions below).\n(If the link 404s locally, run quarto render once after generating data/feeding_clean.RData.)"
+  },
+  {
+    "objectID": "data.html#import-and-preparation",
+    "href": "data.html#import-and-preparation",
+    "title": "Data",
+    "section": "Import and preparation",
+    "text": "Import and preparation\nRaw file location in this repository: data/raw/hayvan_besleme_2024_07.xlsx (copy from your Downloads if missing).\nSteps (mirrors R/prepare_data.R):\n\nRead the Excel sheet with fixed column types (date + text + numeric) so Turkish headers do not depend on janitor transliteration.\nRename columns to ASCII snake_case: tarih, ilce, mahalle_sokak, besleme_noktasi_sayisi, mama_text, arac_text, personel_text.\nTrim extra spaces in ilce and mahalle_sokak (the raw file contains values like \"GÖLBAŞI \" with a trailing space).\nParse food mass: extract numeric kg from strings such as \"84 KG\" → mama_kg.\nParse vehicles: \"-\" → missing; \"Y3\" (typo) → 3; otherwise parse as number.\nParse personnel: \"-\" → missing; otherwise parse as number.\nSave feeding to data/feeding_clean.RData.\n\n\n\nCode\n# Run in terminal from project root (not inside Quarto usually):\n# Rscript R/prepare_data.R"
+  },
+  {
+    "objectID": "data.html#column-dictionary-feeding",
+    "href": "data.html#column-dictionary-feeding",
+    "title": "Data",
+    "section": "Column dictionary (feeding)",
+    "text": "Column dictionary (feeding)\n\n\n\n\n\n\n\nColumn\nDescription\n\n\n\n\ntarih\nCalendar date of the record (July 2024).\n\n\nilce\nAnkara district (ilçe).\n\n\nmahalle_sokak\nNeighborhood / street (mahalle / sokak).\n\n\nbesleme_noktasi_sayisi\nCount of feeding points that day in that row’s scope.\n\n\nmama_kg\nAverage daily dry food at those points, in kg (parsed from text).\n\n\narac_sayisi\nVehicles involved in feeding operations (daily average field in source; see Analysis for variability).\n\n\npersonel_sayisi\nPersonnel count field from the sheet."
+  },
+  {
+    "objectID": "data.html#ai-use-disclosure-if-applicable",
+    "href": "data.html#ai-use-disclosure-if-applicable",
+    "title": "Data",
+    "section": "AI use disclosure (if applicable)",
+    "text": "AI use disclosure (if applicable)\nIf any wording on this page was drafted with an AI assistant, mark that paragraph and add a footnote with the prompt (course rule). Verify all statements against the raw file."
+  },
+  {
+    "objectID": "analysis.html",
+    "href": "analysis.html",
+    "title": "Analysis",
+    "section": "",
+    "text": "Topic: July 2024 street-animal feeding operations across Ankara ilçeler, from health-directorate-style operational records.\nData: 367 neighborhood-day records with feeding-point counts and kg/day dry food averages, plus vehicle and personnel fields.\nImportant aspects: District names needed trimming; food was text-encoded; vehicle column mixes numbers, \"-\", and a Y3 typo.\nInteresting results: Çankaya, Keçiören, and Mamak dominate row counts; kg/day per record is right-skewed with a long tail of large feeding averages.\nMain outcome: Clear district comparisons and temporal coverage (26 distinct calendar days in July) support a discussion of resource concentration and data quality for policy narratives."
+  },
+  {
+    "objectID": "analysis.html#key-takeaways",
+    "href": "analysis.html#key-takeaways",
+    "title": "Analysis",
+    "section": "",
+    "text": "Topic: July 2024 street-animal feeding operations across Ankara ilçeler, from health-directorate-style operational records.\nData: 367 neighborhood-day records with feeding-point counts and kg/day dry food averages, plus vehicle and personnel fields.\nImportant aspects: District names needed trimming; food was text-encoded; vehicle column mixes numbers, \"-\", and a Y3 typo.\nInteresting results: Çankaya, Keçiören, and Mamak dominate row counts; kg/day per record is right-skewed with a long tail of large feeding averages.\nMain outcome: Clear district comparisons and temporal coverage (26 distinct calendar days in July) support a discussion of resource concentration and data quality for policy narratives."
+  },
+  {
+    "objectID": "analysis.html#coverage-in-time-and-space",
+    "href": "analysis.html#coverage-in-time-and-space",
+    "title": "Analysis",
+    "section": "Coverage in time and space",
+    "text": "Coverage in time and space\n\n\nCode\nfeeding |&gt;\n  summarise(\n    rows = n(),\n    first_day = min(tarih, na.rm = TRUE),\n    last_day = max(tarih, na.rm = TRUE),\n    distinct_days = n_distinct(as.Date(tarih)),\n    distinct_ilce = n_distinct(ilce),\n    missing_mama = sum(is.na(mama_kg)),\n    missing_arac = sum(is.na(arac_sayisi)),\n    missing_personel = sum(is.na(personel_sayisi))\n  ) |&gt;\n  knitr::kable(caption = \"Dataset coverage and missingness\")\n\n\n\n\nTable 1: Dataset coverage and missingness\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nrows\nfirst_day\nlast_day\ndistinct_days\ndistinct_ilce\nmissing_mama\nmissing_arac\nmissing_personel\n\n\n\n\n367\n2024-07-01\n2024-07-31\n26\n16\n0\n1\n1\n\n\n\n\n\n\n\n\nThe source table does not always include every calendar day in July (distinct_days &lt; 31). That is a reporting / data collection feature to mention in your presentation, not something we impute."
+  },
+  {
+    "objectID": "analysis.html#district-activity-row-counts",
+    "href": "analysis.html#district-activity-row-counts",
+    "title": "Analysis",
+    "section": "District activity (row counts)",
+    "text": "District activity (row counts)\n\n\nCode\nilce_counts &lt;- feeding |&gt;\n  count(ilce, name = \"rows\") |&gt;\n  mutate(ilce = stats::reorder(factor(ilce), rows))\n\nggplot(ilce_counts, aes(x = ilce, y = rows)) +\n  geom_col(fill = \"#2E86AB\") +\n  coord_flip() +\n  labs(x = NULL, y = \"Rows (mahalle × day)\") +\n  theme_minimal(base_size = 12) +\n  theme(panel.grid.major.y = element_blank())\n\n\n\n\n\n\n\n\nFigure 1: Number of neighborhood-day records per district (ilçe)."
+  },
+  {
+    "objectID": "analysis.html#distribution-of-dry-food-kgday",
+    "href": "analysis.html#distribution-of-dry-food-kgday",
+    "title": "Analysis",
+    "section": "Distribution of dry food (kg/day)",
+    "text": "Distribution of dry food (kg/day)\n\n\nCode\nggplot(feeding, aes(x = mama_kg)) +\n  geom_histogram(fill = \"#A23B72\", color = \"white\", bins = 30, boundary = 0) +\n  labs(x = \"kg/day (parsed)\", y = \"Count\") +\n  theme_minimal(base_size = 12)\n\n\n\n\n\n\n\n\nFigure 2: Histogram of parsed average dry food (kg/day) per record."
+  },
+  {
+    "objectID": "analysis.html#district-comparison-of-kgday",
+    "href": "analysis.html#district-comparison-of-kgday",
+    "title": "Analysis",
+    "section": "District comparison of kg/day",
+    "text": "District comparison of kg/day\n\n\nCode\nbig_ilce &lt;- feeding |&gt;\n  count(ilce) |&gt;\n  filter(n &gt;= 15) |&gt;\n  pull(ilce)\n\nfeeding_sub &lt;- feeding |&gt;\n  filter(ilce %in% big_ilce) |&gt;\n  mutate(ilce = stats::reorder(factor(ilce), mama_kg, FUN = median, na.rm = TRUE))\n\nggplot(feeding_sub, aes(x = ilce, y = mama_kg)) +\n  geom_boxplot(outlier.alpha = 0.35, fill = \"#F18F01\") +\n  coord_flip() +\n  scale_y_continuous(labels = label_number(suffix = \" kg\")) +\n  labs(x = NULL, y = \"Average dry food (kg/day)\") +\n  theme_minimal(base_size = 12)\n\n\n\n\n\n\n\n\nFigure 3: Distribution of kg/day by district for districts with at least 15 records."
+  },
+  {
+    "objectID": "analysis.html#vehicles-and-personnel",
+    "href": "analysis.html#vehicles-and-personnel",
+    "title": "Analysis",
+    "section": "Vehicles and personnel",
+    "text": "Vehicles and personnel\nThese columns were mostly constant in the July extract (many rows share the same small integers), with \"-\" coded gaps. Your write-up should interpret them cautiously: they may reflect fleet / staffing assumptions in reporting rather than precise daily counts.\n\n\nCode\nfeeding |&gt;\n  summarise(\n    arac_distinct = n_distinct(arac_sayisi, na.rm = TRUE),\n    personel_distinct = n_distinct(personel_sayisi, na.rm = TRUE),\n    share_arac_missing = mean(is.na(arac_sayisi)),\n    share_personel_missing = mean(is.na(personel_sayisi))\n  ) |&gt;\n  knitr::kable(digits = 3)\n\n\n\n\nTable 2\n\n\n\n\n\n\n\n\n\n\n\n\narac_distinct\npersonel_distinct\nshare_arac_missing\nshare_personel_missing\n\n\n\n\n1\n1\n0.003\n0.003"
+  },
+  {
+    "objectID": "analysis.html#observations-per-day",
+    "href": "analysis.html#observations-per-day",
+    "title": "Analysis",
+    "section": "Observations per day",
+    "text": "Observations per day\n\n\nCode\ndaily &lt;- feeding |&gt;\n  mutate(day = as.Date(tarih)) |&gt;\n  count(day, name = \"rows\")\n\nggplot(daily, aes(x = day, y = rows)) +\n  geom_line(color = \"#C73E1D\", linewidth = 0.8) +\n  geom_point(color = \"#C73E1D\", size = 2) +\n  scale_x_date(date_labels = \"%d %b\", date_breaks = \"3 days\") +\n  labs(x = NULL, y = \"Rows per day\") +\n  theme_minimal(base_size = 12) +\n  theme(axis.text.x = element_text(angle = 35, hjust = 1))\n\n\n\n\n\n\n\n\nFigure 4: Number of records per calendar day."
+  },
+  {
+    "objectID": "analysis.html#conclusions-for-your-narrative",
+    "href": "analysis.html#conclusions-for-your-narrative",
+    "title": "Analysis",
+    "section": "Conclusions (for your narrative)",
+    "text": "Conclusions (for your narrative)\n\nSpatial concentration: A few districts account for most neighborhood-day rows — tie this to population, urban form, or program emphasis only as hypotheses unless you merge external data.\nSkewed feeding amounts: A long right tail suggests a mix of small local drops and larger consolidated deliveries; outliers deserve qualitative mention.\nOperational fields: Vehicle/personnel columns are sparse / low-variance; do not over-claim precision."
+  },
+  {
+    "objectID": "analysis.html#ai-use-disclosure-if-applicable",
+    "href": "analysis.html#ai-use-disclosure-if-applicable",
+    "title": "Analysis",
+    "section": "AI use disclosure (if applicable)",
+    "text": "AI use disclosure (if applicable)\nIf you extend this analysis with AI-generated text, label it and add the prompt in a footnote; validate all numeric statements against the feeding object."
+  },
+  {
+    "objectID": "STEP_BY_STEP.html",
+    "href": "STEP_BY_STEP.html",
+    "title": "",
+    "section": "",
+    "text": "Code"
+  },
+  {
+    "objectID": "STEP_BY_STEP.html#phase-a-course-admin-once-per-team",
+    "href": "STEP_BY_STEP.html#phase-a-course-admin-once-per-team",
+    "title": "",
+    "section": "Phase A — Course admin (once per team)",
+    "text": "Phase A — Course admin (once per team)\n\nAccept the GitHub Classroom / team invitation (final deliverable PDF, §1).\n\nFirst member creates the team with the exact team name from the list; others join that team.\n\nTurn on GitHub Pages for the repo (Settings → Pages): source is usually main + /docs or root, depending on how the template is set up — match what the instructor’s template says.\n\nEveryone adds a link on their personal Assignment-1 GitHub page back to the project site (final deliverable + guide)."
+  },
+  {
+    "objectID": "STEP_BY_STEP.html#phase-b-initialization-guide-pdf-project-deliverable-1",
+    "href": "STEP_BY_STEP.html#phase-b-initialization-guide-pdf-project-deliverable-1",
+    "title": "",
+    "section": "Phase B — Initialization (Guide PDF, “Project Deliverable 1”)",
+    "text": "Phase B — Initialization (Guide PDF, “Project Deliverable 1”)\nThese items are what Task 1 asked for; keep the same story for the final site.\n\nLock the roster: 4–6 members (or as agreed with the instructor).\n\nConfirm team name = GitHub Pages URL slug (short, professional).\n\nWrite 1 short paragraph each: dataset description, why it fits the project, objectives, what you hope to find, preliminary plan (data → cleaning → EDA → deeper questions → visuals).\n\nData references: official source URL, retrieval date, license/usage if stated (health directorate / open data portal — cite whatever page you downloaded from).\n\nEthics / AI: anything from generators → mark it, add prompt in a footnote; you remain responsible for correctness (both PDFs)."
+  },
+  {
+    "objectID": "STEP_BY_STEP.html#phase-c-tooling-on-each-computer",
+    "href": "STEP_BY_STEP.html#phase-c-tooling-on-each-computer",
+    "title": "",
+    "section": "Phase C — Tooling on each computer",
+    "text": "Phase C — Tooling on each computer\n\nInstall R (current release) and RStudio or Positron.\n\nInstall Quarto and confirm quarto check passes.\n\nIn R, install packages you will likely need, e.g.:\ninstall.packages(c(\"tidyverse\", \"readxl\", \"janitor\", \"skimr\", \"here\"))"
+  },
+  {
+    "objectID": "STEP_BY_STEP.html#phase-d-reproducible-data-pipeline-feeds-the-data-page-.rdata",
+    "href": "STEP_BY_STEP.html#phase-d-reproducible-data-pipeline-feeds-the-data-page-.rdata",
+    "title": "",
+    "section": "Phase D — Reproducible data pipeline (feeds the Data page + .RData)",
+    "text": "Phase D — Reproducible data pipeline (feeds the Data page + .RData)\n\nIn the team repo, add data/raw/ and copy the Excel file into it (keep the Downloads original as backup). Use a simple ASCII filename in the repo if you want fewer path issues, e.g. data/raw/hayvan_besleme_2024_07.xlsx.\n\nCreate R/01_import_clean.R (or .qmd chunk) that:\n\nReads the sheet with readxl::read_excel().\n\nUses janitor::clean_names() for safe column names.\n\nDocuments what each column means (Turkish headers → English snake_case + glossary table on the Data page).\n\nParses fields that are text but represent numbers (e.g. \"5 KG\" → numeric kg) with readr::parse_number() or regex; document dropped/changed rows.\n\nHandles missing values explicitly (rule: row drop vs impute — justify in prose).\n\nBuild a single analysis-ready object, e.g. feeding &lt;- ... (tibble/data frame).\n\nSave for the website:\nsave(feeding, file = here::here(\"data\", \"feeding_clean.RData\"))\nCommit data/raw/…xlsx (if size and license allow) or document exact download steps if the file must stay external.\n\nOn the Data Quarto page: link to feeding_clean.RData with a raw GitHub link (or release asset) so graders can download it (final deliverable checklist)."
+  },
+  {
+    "objectID": "STEP_BY_STEP.html#phase-e-quarto-website-structure-final-deliverable-pdf",
+    "href": "STEP_BY_STEP.html#phase-e-quarto-website-structure-final-deliverable-pdf",
+    "title": "",
+    "section": "Phase E — Quarto website structure (final deliverable PDF)",
+    "text": "Phase E — Quarto website structure (final deliverable PDF)\n\nKeep three Quarto documents as a minimum: index.qmd (home), data.qmd, analysis.qmd (names may match the template).\n\n_quarto.yml: project type website, navbar entries for Home / Data / Analysis.\n\nHome (index.qmd): team name, members + GitHub links, title, short description. At the bottom: Key takeaways (3–5 bullets) — required placement (final deliverable).\n\nData (data.qmd): source + ethics; import and all preprocessing steps in words; optional collapsible code; link to .RData.\n\nAnalysis (analysis.qmd)`: start with the same Key takeaways** (3–5 bullets) at the top; then EDA narrative, plots, tables; code collapsible; avoid huge raw dumps in the rendered page.\n\nFor PDF export per page, add the YAML block the instructor gave (title/sidebar/format/margins) when you render docx/pdf for submission — see final deliverable PDF §3 “Reporting”."
+  },
+  {
+    "objectID": "STEP_BY_STEP.html#phase-f-eda-quality-bar-final-deliverable-pdf",
+    "href": "STEP_BY_STEP.html#phase-f-eda-quality-bar-final-deliverable-pdf",
+    "title": "",
+    "section": "Phase F — EDA quality bar (final deliverable PDF)",
+    "text": "Phase F — EDA quality bar (final deliverable PDF)\n\nColumn dictionary: human-readable meanings + units.\n\nDistributions: by district (İLÇE), dates, feeding points, food amount, vehicles, personnel — use plots that answer real questions (e.g. inequality across districts, weekly pattern if you have enough dates).\n\nAt least one “so what”: policy or operations insight, not only charts.\n\nNo shallow copy-paste: each section should advance the story; tie figures to text."
+  },
+  {
+    "objectID": "STEP_BY_STEP.html#phase-g-build-publish-submit",
+    "href": "STEP_BY_STEP.html#phase-g-build-publish-submit",
+    "title": "",
+    "section": "Phase G — Build, publish, submit",
+    "text": "Phase G — Build, publish, submit\n\nquarto render the site; fix warnings that affect outputs.\n\nPush to main; verify GitHub Pages shows the HTML.\n\nRender PDF (or Word → merge) per course instructions; upload to HADI (https://hadi.hacettepe.edu.tr).\n\nPresentation: use the website in class; no separate PowerPoint (final deliverable). Rehearse ~10 minutes.\n\nOptional: 1–2 min teaser video for +5 bonus."
+  },
+  {
+    "objectID": "STEP_BY_STEP.html#suggested-order-this-week",
+    "href": "STEP_BY_STEP.html#suggested-order-this-week",
+    "title": "",
+    "section": "Suggested order this week",
+    "text": "Suggested order this week\n\n\n\nOrder\nTask\n\n\n\n\n1\nGitHub team + Pages working\n\n\n2\nData file in repo + import script + feeding_clean.RData\n\n\n3\nData page draft (sources + cleaning story + download link)\n\n\n4\nAnalysis page: EDA + takeaways top/bottom\n\n\n5\nPolish home; render PDF; HADI upload"
+  },
+  {
+    "objectID": "STEP_BY_STEP.html#quick-reference-pdf-what-to-deliver",
+    "href": "STEP_BY_STEP.html#quick-reference-pdf-what-to-deliver",
+    "title": "",
+    "section": "Quick reference — PDF → what to deliver",
+    "text": "Quick reference — PDF → what to deliver\n\n\n\n\n\n\n\nSource\nYou deliver\n\n\n\n\nGuide PDF\nTeam, name, dataset rationale, plan, references (keep consistent on site)\n\n\nFinal PDF\nQuarto site (home/data/analysis), .RData, EDA depth, takeaways placement, HTML + PDF to HADI, live presentation from site\n\n\n\nIf you want this repo to also contain a ready-made Quarto skeleton and R/01_import_clean.R wired to here::here(), say so and we can add those files next."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Street animal feeding in Greater Ankara (July 2024)",
+    "section": "",
+    "text": "Name\nRole\nGitHub\n\n\n\n\nYour name\n(optional)\nProfile\n\n\nTeammate\n\nProfile\n\n\nTeammate\n\nProfile\n\n\nTeammate\n\nProfile\n\n\n\nTeams are typically 4–6 students: add or remove rows so every member has a working link to their Assignment 1 GitHub profile (final deliverable PDF). Replace placeholders when accounts exist.\nGitHub site URLs: _quarto.yml uses org pawpxtrol, repo emu430 → https://pawpxtrol.github.io/emu430/. If you rename the repo, update both URLs in _quarto.yml."
+  },
+  {
+    "objectID": "index.html#team-paw-patrol",
+    "href": "index.html#team-paw-patrol",
+    "title": "Street animal feeding in Greater Ankara (July 2024)",
+    "section": "",
+    "text": "Name\nRole\nGitHub\n\n\n\n\nYour name\n(optional)\nProfile\n\n\nTeammate\n\nProfile\n\n\nTeammate\n\nProfile\n\n\nTeammate\n\nProfile\n\n\n\nTeams are typically 4–6 students: add or remove rows so every member has a working link to their Assignment 1 GitHub profile (final deliverable PDF). Replace placeholders when accounts exist.\nGitHub site URLs: _quarto.yml uses org pawpxtrol, repo emu430 → https://pawpxtrol.github.io/emu430/. If you rename the repo, update both URLs in _quarto.yml."
+  },
+  {
+    "objectID": "index.html#project-summary",
+    "href": "index.html#project-summary",
+    "title": "Street animal feeding in Greater Ankara (July 2024)",
+    "section": "Project summary",
+    "text": "Project summary\nThis project analyzes July 2024 street-animal feeding activity published by the Ankara Provincial Health Directorate (Ankara İl Sağlık Müdürlüğü). The spreadsheet records, by date and neighborhood, how many feeding points were active, the average daily dry food distributed (kg), and rolling vehicle and personnel counts used in feeding operations across Ankara districts.\nObjectives: (1) describe spatial and temporal patterns; (2) compare districts in terms of feeding intensity; (3) highlight data-quality issues (e.g. coded missing values, typos) for transparent reporting."
+  },
+  {
+    "objectID": "index.html#link-to-course-menu",
+    "href": "index.html#link-to-course-menu",
+    "title": "Street animal feeding in Greater Ankara (July 2024)",
+    "section": "Link to course menu",
+    "text": "Link to course menu\nAdd a short description and a link from your personal EMU430 coursework page to this project site (see course PDF)."
+  },
+  {
+    "objectID": "index.html#key-takeaways",
+    "href": "index.html#key-takeaways",
+    "title": "Street animal feeding in Greater Ankara (July 2024)",
+    "section": "Key takeaways",
+    "text": "Key takeaways\n\nTopic: Municipal street animal (“sokak hayvanı”) feeding logistics in Greater Ankara during July 2024, using official health-directorate-style operational records.\nData: 367 neighborhood-day rows with district, street/mahalle, feeding-point counts, average dry food (kg/day), and vehicle / personnel staffing indicators.\nImportant aspects: Food amounts were stored as text (e.g. \"84 KG\"); vehicle counts sometimes use \"-\" (missing) or a typo Y3 instead of 3 — we document and clean these in the Data page.\nInteresting results: Districts differ strongly in how many rows (neighborhood-days) appear and in the distribution of kg/day per feeding point; some operational fields are almost constant across rows (see Analysis).\nMain outcome: A reproducible Quarto site plus a cleaned .RData object for graders, suitable for your GitHub Pages presentation and HADI PDF submission."
+  }
+]
