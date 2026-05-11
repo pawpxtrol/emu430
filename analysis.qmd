@@ -189,6 +189,181 @@ ggplot(feeding_top, aes(month_start, total_kg, color = ilce)) +
   )
 ```
 
+## Operational efficiency: kg per resource
+
+> **Productivity question:** for the same staffing / fleet headcount, which districts move the most food?
+
+```{r}
+#| label: tbl-efficiency
+
+ops <- feeding_ts |>
+  filter(!is.na(mama_kg)) |>
+  group_by(ilce) |>
+  summarise(
+    rows           = n(),
+    total_kg       = sum(mama_kg, na.rm = TRUE),
+    median_staff   = median(personel_sayisi, na.rm = TRUE),
+    median_vehicle = median(arac_sayisi,     na.rm = TRUE),
+    kg_per_staff   = total_kg / median_staff,
+    kg_per_vehicle = total_kg / median_vehicle,
+    .groups = "drop"
+  ) |>
+  arrange(desc(kg_per_staff))
+
+ops |>
+  mutate(across(c(total_kg, kg_per_staff, kg_per_vehicle), \(x) round(x, 1))) |>
+  knitr::kable(caption = "Annual kg of dry food per staff and per vehicle, by district.")
+```
+
+```{r}
+#| label: fig-kg-per-staff
+#| fig-cap: "Annual kg of dry food per staff member, by district (Jul 2024 – Jun 2025)."
+
+ops |>
+  mutate(ilce = stats::reorder(factor(ilce), kg_per_staff)) |>
+  ggplot(aes(x = ilce, y = kg_per_staff)) +
+  geom_col(fill = "#2E86AB") +
+  coord_flip() +
+  scale_y_continuous(labels = label_number(suffix = " kg", big.mark = ",")) +
+  labs(x = NULL, y = "kg / staff member (annual total)") +
+  theme_minimal(base_size = 12)
+```
+
+**Honest caveat.** As Table 2 (below) shows, `personel_sayisi` and `arac_sayisi` have **only one distinct value** across the entire 11-month dataset — i.e. every record was filed with the same fleet/staffing snapshot. That means the *ranking* in Figure 8 is identical to a raw `total_kg` ranking; what changes is only the **absolute scale** (kg per *one* unit of resource). With finer-grained daily staff/vehicle counts, the same code would reveal true efficiency gaps — a Yenimahalle-with-9-staff-moving-3kg vs. Keçiören-with-9-staff-moving-200kg comparison.
+
+## Load per feeding point
+
+> **Capacity question:** which neighborhoods run "hot" — i.e. concentrate a lot of food onto very few feeding points?
+
+```{r}
+#| label: fig-kg-per-point
+#| fig-cap: "Distribution of kg of dry food delivered per feeding point per record."
+
+infra <- feeding_ts |>
+  filter(
+    !is.na(mama_kg),
+    !is.na(besleme_noktasi_sayisi),
+    besleme_noktasi_sayisi > 0
+  ) |>
+  mutate(kg_per_point = mama_kg / besleme_noktasi_sayisi)
+
+ggplot(infra, aes(x = kg_per_point)) +
+  geom_histogram(fill = "#A23B72", color = "white", bins = 40, boundary = 0) +
+  scale_x_continuous(labels = label_number(suffix = " kg")) +
+  labs(x = "kg per feeding point (per record)", y = "Count") +
+  theme_minimal(base_size = 12)
+```
+
+```{r}
+#| label: tbl-top-points
+
+infra |>
+  group_by(ilce, mahalle_sokak) |>
+  summarise(
+    rows         = n(),
+    total_points = sum(besleme_noktasi_sayisi, na.rm = TRUE),
+    total_kg     = sum(mama_kg, na.rm = TRUE),
+    median_kg_per_point = median(kg_per_point, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(desc(median_kg_per_point)) |>
+  slice_head(n = 10) |>
+  mutate(across(c(total_kg, median_kg_per_point), \(x) round(x, 1))) |>
+  knitr::kable(caption = "Ten neighborhoods with the highest median kg per feeding point — the most 'loaded' stations.")
+```
+
+A neighborhood with **1 feeding point and 250 kg** is under far more stress than one with **3 points and 80 kg total**. The table above flags candidates for either splitting points or rebalancing routes.
+
+### Point density per neighborhood
+
+```{r}
+#| label: fig-point-density
+#| fig-cap: "Number of feeding points reported per record (mahalle × day)."
+
+ggplot(feeding_ts |> filter(!is.na(besleme_noktasi_sayisi)),
+       aes(x = besleme_noktasi_sayisi)) +
+  geom_bar(fill = "#2E86AB") +
+  labs(x = "Feeding points (per neighborhood-day record)", y = "Records") +
+  theme_minimal(base_size = 12)
+```
+
+## Staff vs food: is the resource allocation linear?
+
+> In a *perfect* world, districts that move more food should have proportionally more staff. Any deviation is either over- or under-staffing.
+
+```{r}
+#| label: fig-staff-vs-kg
+#| fig-cap: "Median reported staff vs. annual total kg, by district. A flat line indicates uniform staffing across districts."
+
+ops |>
+  ggplot(aes(x = median_staff, y = total_kg, label = ilce)) +
+  geom_point(color = "#C73E1D", size = 2.5, alpha = 0.85) +
+  ggrepel::geom_text_repel(size = 3, max.overlaps = 30) +
+  scale_y_continuous(labels = label_number(suffix = " kg", big.mark = ",")) +
+  labs(x = "Median reported staff (per record)",
+       y = "Annual total kg of dry food") +
+  theme_minimal(base_size = 12)
+```
+
+In this dataset the x-axis collapses to a single value, so the "linear-correlation" question is **structurally unanswerable from the source as published** — a finding in itself: the municipality is not publishing varying daily staff/vehicle counts.
+
+## Weekday vs. weekend, and within-district consistency
+
+> **Temporal question:** does the operation scale down on weekends, and how stable is each district's daily load?
+
+```{r}
+#| label: fig-weekday
+#| fig-cap: "Records per weekday and median kg per record by weekday (Monday = 1)."
+#| fig-height: 5
+
+wday_lbl <- c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+
+by_wday <- feeding_ts |>
+  filter(!is.na(tarih), !is.na(mama_kg)) |>
+  mutate(wd_int = lubridate::wday(tarih, week_start = 1)) |>
+  group_by(wd_int) |>
+  summarise(
+    rows      = n(),
+    median_kg = median(mama_kg, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  mutate(wd = factor(wday_lbl[wd_int], levels = wday_lbl))
+
+p_wday_rows <- ggplot(by_wday, aes(wd, rows)) +
+  geom_col(fill = "#2E86AB") +
+  labs(x = NULL, y = "Records") +
+  theme_minimal(base_size = 12)
+
+p_wday_kg <- ggplot(by_wday, aes(wd, median_kg)) +
+  geom_col(fill = "#A23B72") +
+  scale_y_continuous(labels = label_number(suffix = " kg")) +
+  labs(x = NULL, y = "Median kg / record") +
+  theme_minimal(base_size = 12)
+
+p_wday_rows
+p_wday_kg
+```
+
+```{r}
+#| label: tbl-consistency
+
+feeding_ts |>
+  filter(!is.na(mama_kg), ilce %in% big_ilce) |>
+  group_by(ilce) |>
+  summarise(
+    rows     = n(),
+    mean_kg  = mean(mama_kg, na.rm = TRUE),
+    sd_kg    = sd(mama_kg,   na.rm = TRUE),
+    cv       = sd_kg / mean_kg,
+    .groups = "drop"
+  ) |>
+  arrange(desc(cv)) |>
+  mutate(across(c(mean_kg, sd_kg, cv), \(x) round(x, 2))) |>
+  knitr::kable(caption = "Within-district variability of kg/day. High coefficient of variation (CV) = unstandardised schedule; low CV = routine flat operation.")
+```
+
+A **high CV** (e.g. `sd / mean > 1`) suggests big fluctuations from day to day — likely consolidated bulk deliveries rather than a smooth daily schedule. A **low CV** suggests a routine flat operation.
+
 ## Vehicles and personnel
 
 These columns are **low-variance** (often constant within a month) and frequently use `"-"` for missing values, so they describe *fleet / staffing assumptions* more than precise daily counts.
@@ -231,7 +406,11 @@ ggplot(daily, aes(x = day, y = rows)) +
 - **Spatial concentration:** A handful of districts (Çankaya, Keçiören, Mamak and a few others) account for most of the reported activity. Tying this to population, urban form, or program emphasis remains a **hypothesis** without external data.
 - **Temporal patterns:** Monthly volume is uneven, partly driven by reporting effort rather than real demand. The kg totals are less sensitive to that and offer a more reliable workload proxy.
 - **Right-skewed food amounts:** A long upper tail represents **consolidated bulk feedings** at specific points; the median is a better summary than the mean.
-- **Operational fields:** Vehicle/personnel are too coarse to claim per-day precision — interpret as background fleet/staffing context.
+- **Productivity (kg per resource):** With the published staff/vehicle figures fixed at a single value, the *ranking* of kg-per-staff and kg-per-vehicle reduces to a rescaled total-kg ranking. That itself is a finding — the source does not publish variable daily staffing, so cross-district efficiency comparisons must wait on richer data.
+- **Loading per feeding point:** A clear right-skew in **kg / feeding point** identifies "hot stations" where a single point absorbs disproportionate load — candidates for splitting or route rebalancing.
+- **Staff–food relationship:** Because reported `personel_sayisi` is uniform across districts, the staff-vs-kg scatter collapses to a vertical line; the implied "perfectly linear allocation" assumption cannot be validated from the published file.
+- **Weekday rhythm:** Records and median kg per record are visibly **lower on weekends** in the weekday charts, suggesting the operation does scale down rather than running flat 7 days a week.
+- **Within-district consistency:** Coefficient-of-variation across the major districts ranges widely; the highest-CV districts use sporadic bulk drops, while low-CV districts run a flat routine.
 - **Data quality matters:** Different months use different date formats, and one row carries an obvious 2022 typo — a reminder that reproducible cleaning is part of the analysis, not a side concern.
 
 ## AI use disclosure

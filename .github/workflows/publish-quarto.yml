@@ -46,6 +46,7 @@ jobs:
             any::ggplot2
             any::scales
             any::lubridate
+            any::ggrepel
             any::knitr
             any::rmarkdown
 
