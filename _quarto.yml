@@ -8,9 +8,9 @@ project:
 
 website:
   title: "Paw Patrol — Street animal feeding (Ankara)"
-  # GitHub org: pawpxtrol — if your repository name is not "emu430", change it in BOTH URLs below.
-  site-url: https://pawpxtrol.github.io/emu430/
-  repo-url: https://github.com/pawpxtrol/emu430
+  # GitHub user pawpatrol — if your repository name is not "emu430", change it in BOTH URLs below.
+  site-url: https://pawpatrol.github.io/emu430/
+  repo-url: https://github.com/pawpatrol/emu430
   navbar:
     left:
       - href: index.qmd

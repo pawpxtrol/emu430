@@ -10,25 +10,25 @@ This folder is a **complete starter** for the EMU430 team website: **Home**, **D
 
 **Course list:** the final deliverable PDF listed **fixed GitHub team names** (e.g. `team_petra`, `rhapsody`, …). If your instructor assigned you to one of those names, use that name for the **GitHub Classroom team / repo**, and keep **“Paw Patrol”** as your **project title** on the site. If the instructor approved **Paw Patrol** as the official team name, you are fine using it everywhere.
 
-## GitHub org **pawpxtrol**
+## GitHub account **pawpatrol**
 
-`_quarto.yml` is set for **`https://github.com/pawpxtrol/emu430`** and project Pages **`https://pawpxtrol.github.io/emu430/`**. If GitHub Classroom created a **different repository name**, edit **both** `site-url` and `repo-url` in `_quarto.yml` (keep org **`pawpxtrol`**).
+`_quarto.yml` is set for **`https://github.com/pawpatrol/emu430`** and project Pages **`https://pawpatrol.github.io/emu430/`**. (Earlier docs used a typo **`pawpxtrol`** — your profile is **`pawpatrol`**.) If Classroom uses another repo name, edit **both** URLs in `_quarto.yml`.
 
-Members still need **personal GitHub accounts** to be **invited to the org** or added as collaborators on the repo (Assignment 1 profile links go in `index.qmd`).
+Teammates add their **Assignment 1** profile links in `index.qmd`; they do not need to own the repo.
 
 ## New personal GitHub account (optional)
 
 1. Sign up at [github.com/signup](https://github.com/signup) if you still need an individual account.
 2. **Username:** letters, numbers, hyphens — **no spaces**. Display name can stay **Paw Patrol** in [Profile settings](https://github.com/settings/profile).
-3. Ask the org owner to **invite** you to **`pawpxtrol`** (or to the team repo).
-4. Push this project to **`github.com/pawpxtrol/emu430`** (or your real Classroom repo) and enable **Pages** from **`gh-pages`** after the first successful workflow run.
+3. Create repo **`emu430`** on GitHub under **`pawpatrol`** (green **New** on your profile) if it does not exist yet — empty, no README is fine.
+4. Push this project to **`github.com/pawpatrol/emu430`** and enable **Pages** from **`gh-pages`** after the first successful workflow run.
 
 ## What you must provide (fill-in checklist)
 
 | Item | Where to put it |
 |------|------------------|
 | **Official data URL** + access date + attribution | `data.qmd` (“Source and citation”) |
-| **Team / repo URLs** | Already set for org **`pawpxtrol`** / repo **`emu430`** in `_quarto.yml` — change only if your repo slug differs |
+| **Team / repo URLs** | Set for **`pawpatrol/emu430`** in `_quarto.yml` — change only if your repo slug differs |
 | **All member names** + **GitHub profile URLs** (Assignment 1) | `index.qmd` team table |
 | **Course personal page** | Link from your EMU430 menu page **to** this published site |
 | **AI use** (if any) | Mark sections + footnote with prompt (course rule) on any page you used AI for wording |
