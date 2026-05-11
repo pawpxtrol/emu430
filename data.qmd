@@ -23,7 +23,7 @@ We combined **eleven monthly Excel workbooks** spanning **July 2024 through June
 
 - Combined **11 monthly workbooks** (≈ 3,700+ neighborhood-day rows) into one tibble `feeding`.
 - **Standardized** district / neighborhood labels (trimmed stray spaces such as `"GÖLBAŞI "`).
-- **Parsed mixed date formats** — most files use Excel dates; **March 2025** stored them as strings like `"1.03.2025"`. Both formats are handled by `parse_mixed_date()`.
+- **Parsed mixed date formats** — column 1 is read as a native Excel **`date`** where possible; when that is missing (e.g. **March 2025** string cells like `"1.03.2025"`), we fill from the text column with `parse_date_from_text()` (Excel serials, `lubridate`, explicit formats).
 - **Parsed** text-encoded dry-food amounts into numeric **`mama_kg`** (e.g. `"84 KG"` → `84`).
 - **Normalized vehicle / personnel** fields: **`Y3` → 3**, **`-` → missing**, blank → missing.
 - Added derived columns **`yil`**, **`ay`**, **`yil_ay`** so the analysis page can compare across months.
@@ -46,11 +46,11 @@ After `Rscript R/prepare_data.R` and `quarto render`, the cleaned dataset is cop
 **Pipeline (mirrors `R/prepare_data.R`):**
 
 1. **Auto-discover** every file under `data/raw/` matching `hayvan_besleme_*.xlsx`.
-2. **Read** each workbook with all columns as text (so we control coercion ourselves).
-3. **Rename** the seven columns to ASCII snake_case: `tarih`, `ilce`, `mahalle_sokak`, `besleme_noktasi_sayisi`, `mama_kg`, `arac_sayisi`, `personel_sayisi`, plus the metadata column `source_file`.
-4. **Parse dates** via `parse_mixed_date()` — accepts Excel `Date`/`POSIXct` values and DMY strings (`"1.03.2025"`).
+2. **Read each workbook twice for column 1:** native Excel **`date`** (covers most months) plus a parallel **text** pass so we can recover **string-encoded dates** (e.g. March 2025’s `"1.03.2025"`) and **numeric Excel serials** if a sheet is ever exported as plain numbers.
+3. **Merge** the two passes: use `as.Date()` on the date column; where it is still `NA`, fill from the text column via `parse_date_from_text()`.
+4. **Rename** the seven source columns to ASCII snake_case: `tarih`, `ilce`, `mahalle_sokak`, `besleme_noktasi_sayisi`, `mama_kg` (via `mama_text`), `arac_sayisi`, `personel_sayisi`, plus metadata `source_file`.
 5. **Trim** extra spaces in `ilce` and `mahalle_sokak`.
-6. **Parse food mass** with `readr::parse_number()` (extracts the leading kg figure).
+6. **Parse food mass** with `readr::parse_number()` (Turkish decimal comma) from the mama text field.
 7. **Parse vehicles:** `"-"` → `NA`; `"Y3"` (typo) → `3`; otherwise numeric.
 8. **Parse personnel:** `"-"` → `NA`; otherwise numeric.
 9. **Combine** with `purrr::map_dfr()`, drop rows whose date failed to parse, add `yil` / `ay` / `yil_ay`, and **save** `feeding` to `data/feeding_clean.RData`.

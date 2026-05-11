@@ -11,6 +11,7 @@ suppressPackageStartupMessages({
   library(readr)
   library(here)
   library(purrr)
+  library(lubridate)
 })
 
 raw_dir <- here::here("data", "raw")
@@ -25,51 +26,93 @@ if (length(files) == 0) {
 
 message("Found ", length(files), " monthly Excel file(s).")
 
-# Parse "1.03.2025" -> Date, or accept already-Date / POSIXct values.
-parse_mixed_date <- function(x) {
-  if (inherits(x, c("Date", "POSIXct", "POSIXt"))) return(as.Date(x))
-  # As character; try DMY with "." or "/" or "-"
-  s <- str_squish(as.character(x))
-  s <- str_replace_all(s, "[./-]", "-")
-  d <- suppressWarnings(as.Date(s, format = "%d-%m-%Y"))
-  miss <- is.na(d) & !is.na(s) & nzchar(s) & s != "NA"
-  # Try YMD as fallback
-  if (any(miss)) {
-    d2 <- suppressWarnings(as.Date(s[miss], format = "%Y-%m-%d"))
-    d[miss] <- d2
+# Parse date cells that arrive as plain text (Excel serials, DMY strings, ISO, …).
+parse_date_from_text <- function(s) {
+  s <- str_squish(as.character(s))
+  n <- length(s)
+  out <- rep(as.Date(NA), n)
+  valid <- !is.na(s) & nzchar(s) & s != "NA"
+  if (!any(valid)) {
+    return(out)
   }
-  d
+
+  # 1) Pure numeric → Excel serial (common when sheet is read as character)
+  sn <- suppressWarnings(as.numeric(s))
+  is_serial <- valid & !is.na(sn) & grepl("^[0-9]+(\\.[0-9]+)?$", s) &
+    sn >= 20000 & sn <= 80000
+  if (any(is_serial, na.rm = TRUE)) {
+    out[is_serial] <- as.Date(floor(sn[is_serial]), origin = "1899-12-30")
+  }
+
+  # 2) lubridate flexible parsers (handles 1.03.2025, 01/03/2025, etc.)
+  rem <- valid & is.na(out)
+  if (any(rem, na.rm = TRUE)) {
+    out[rem] <- as.Date(suppressWarnings(dmy(s[rem], quiet = TRUE)))
+  }
+  rem <- valid & is.na(out)
+  if (any(rem, na.rm = TRUE)) {
+    out[rem] <- as.Date(suppressWarnings(ymd(s[rem], quiet = TRUE)))
+  }
+  rem <- valid & is.na(out)
+  if (any(rem, na.rm = TRUE)) {
+    out[rem] <- as.Date(suppressWarnings(ymd_hms(s[rem], quiet = TRUE)))
+  }
+
+  # 3) Explicit DMY with dashes (after normalising separators)
+  rem <- valid & is.na(out)
+  if (any(rem, na.rm = TRUE)) {
+    norm <- str_replace_all(s[rem], "[./]", "-")
+    out[rem] <- suppressWarnings(as.Date(norm, format = "%d-%m-%Y"))
+    still <- rem & is.na(out)
+    if (any(still, na.rm = TRUE)) {
+      norm2 <- str_replace_all(s[still], "[./]", "-")
+      out[still] <- suppressWarnings(as.Date(norm2, format = "%Y-%m-%d"))
+    }
+  }
+
+  out
 }
 
 read_one <- function(path) {
-  # Read everything as text so we can normalize ourselves
-  df <- read_excel(path, col_types = "text")
-  if (ncol(df) < 7) {
+  # Text pass: reliable for mama / araç / personel strings
+  df_txt <- read_excel(path, col_types = rep("text", 7))
+  if (ncol(df_txt) < 7) {
     warning("Skipping ", basename(path), " (fewer than 7 columns).")
     return(NULL)
   }
-  names(df)[1:7] <- c(
-    "tarih_raw", "ilce", "mahalle_sokak",
-    "besleme_noktasi_text", "mama_text", "arac_text", "personel_text"
+
+  # Native Excel date in column 1 (POSIXct/Date); string dates become NA here
+  df_date <- read_excel(
+    path,
+    col_types = c("date", "text", "text", "text", "text", "text", "text")
   )
 
-  df |>
+  tarih <- as.Date(df_date[[1]])
+  raw1 <- str_squish(df_txt[[1]])
+  miss <- is.na(tarih) & !is.na(raw1) & nzchar(raw1) & raw1 != "NA"
+  if (any(miss)) {
+    tarih[miss] <- parse_date_from_text(raw1[miss])
+  }
+
+  tibble(
+    tarih = tarih,
+    ilce = str_squish(df_txt[[2]]),
+    mahalle_sokak = str_squish(df_txt[[3]]),
+    besleme_noktasi_sayisi = readr::parse_number(df_txt[[4]], na = c("", "-", "NA")),
+    mama_text = str_squish(df_txt[[5]]),
+    arac_text = str_squish(df_txt[[6]]),
+    personel_text = str_squish(df_txt[[7]]),
+    source_file = basename(path)
+  ) |>
     mutate(
-      tarih = parse_mixed_date(tarih_raw),
-      ilce = str_squish(ilce),
-      mahalle_sokak = str_squish(mahalle_sokak),
-      besleme_noktasi_sayisi = readr::parse_number(besleme_noktasi_text, na = c("", "-", "NA")),
       mama_kg = readr::parse_number(mama_text, locale = locale(decimal_mark = ",")),
-      arac_text = str_squish(arac_text),
-      personel_text = str_squish(personel_text),
       arac_sayisi = case_when(
         arac_text %in% c("-", "", NA_character_) ~ NA_real_,
         str_detect(arac_text, regex("^[Yy]")) ~
           readr::parse_number(str_remove(arac_text, regex("^[Yy]"))),
         TRUE ~ readr::parse_number(arac_text, na = c("", "-", "NA"))
       ),
-      personel_sayisi = readr::parse_number(personel_text, na = c("", "-", "NA")),
-      source_file = basename(path)
+      personel_sayisi = readr::parse_number(personel_text, na = c("", "-", "NA"))
     ) |>
     select(
       tarih, ilce, mahalle_sokak,
@@ -81,12 +124,11 @@ read_one <- function(path) {
 
 feeding <- purrr::map_dfr(files, read_one)
 
-# Drop rows where we could not parse the date (very rare, would be a header reread)
 feeding <- feeding |>
   filter(!is.na(tarih)) |>
   mutate(
     yil = as.integer(format(tarih, "%Y")),
-    ay  = as.integer(format(tarih, "%m")),
+    ay = as.integer(format(tarih, "%m")),
     yil_ay = format(tarih, "%Y-%m")
   ) |>
   arrange(tarih, ilce, mahalle_sokak)
@@ -99,4 +141,5 @@ message("Wrote ", nrow(feeding), " rows from ", length(unique(feeding$source_fil
         " file(s) to ", out_rdata)
 message("Date range: ", min(feeding$tarih, na.rm = TRUE), " -> ",
         max(feeding$tarih, na.rm = TRUE))
+message("Months (yil_ay): ", paste(sort(unique(feeding$yil_ay)), collapse = ", "))
 message("İlçe count: ", length(unique(feeding$ilce)))
