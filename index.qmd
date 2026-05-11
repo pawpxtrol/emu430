@@ -1,0 +1,37 @@
+---
+title: "Street animal feeding in Greater Ankara (July 2024)"
+subtitle: "EMU430 — Team Paw Patrol"
+---
+
+## Team — Paw Patrol
+
+| Name | Role | GitHub |
+|------|------|----------|
+| **Your name** | *(optional)* | [Profile](https://github.com/YOUR_USERNAME) |
+| **Teammate** | | [Profile](https://github.com/) |
+| **Teammate** | | [Profile](https://github.com/) |
+| **Teammate** | | [Profile](https://github.com/) |
+
+*Teams are typically **4–6** students: add or remove rows so every member has a **working link** to their **Assignment 1** GitHub profile (final deliverable PDF). Replace placeholders when accounts exist.*
+
+**GitHub site URLs:** `_quarto.yml` is set for organization **`pawpxtrol`**, repo **`emu430`** → site **`https://pawpxtrol.github.io/emu430/`** and repo **`https://github.com/pawpxtrol/emu430`**. If your real repository name differs (e.g. Classroom), update **both** URLs in `_quarto.yml` only.
+
+## Project summary
+
+This project analyzes **July 2024 street-animal feeding activity** published by the **Ankara Provincial Health Directorate** (`Ankara İl Sağlık Müdürlüğü`). The spreadsheet records, by date and neighborhood, how many **feeding points** were active, the **average daily dry food** distributed (kg), and rolling **vehicle** and **personnel** counts used in feeding operations across Ankara districts.
+
+**Objectives:** (1) describe spatial and temporal patterns; (2) compare districts in terms of feeding intensity; (3) highlight data-quality issues (e.g. coded missing values, typos) for transparent reporting.
+
+## Link to course menu
+
+Add a short description and a link **from your personal EMU430 coursework page** to this project site (see course PDF).
+
+---
+
+## Key takeaways
+
+- **Topic:** Municipal **street animal (“sokak hayvanı”) feeding** logistics in **Greater Ankara** during **July 2024**, using official health-directorate-style operational records.
+- **Data:** **367** neighborhood-day rows with **district**, **street/mahalle**, **feeding-point counts**, **average dry food (kg/day)**, and **vehicle / personnel** staffing indicators.
+- **Important aspects:** Food amounts were stored as text (e.g. `"84 KG"`); vehicle counts sometimes use `"-"` (missing) or a typo **`Y3`** instead of **`3`** — we document and clean these in the Data page.
+- **Interesting results:** Districts differ strongly in how many rows (neighborhood-days) appear and in the **distribution of kg/day** per feeding point; some operational fields are almost constant across rows (see Analysis).
+- **Main outcome:** A reproducible **Quarto** site plus a cleaned **`.RData`** object for graders, suitable for your **GitHub Pages** presentation and **HADI** PDF submission.

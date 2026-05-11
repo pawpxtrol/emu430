@@ -1,0 +1,36 @@
+project:
+  type: website
+  output-dir: _site
+  pre-render:
+    - "Rscript R/prepare_data.R"
+  resources:
+    - data/feeding_clean.RData
+
+website:
+  title: "Paw Patrol — Street animal feeding (Ankara)"
+  # GitHub org: pawpxtrol — if your repository name is not "emu430", change it in BOTH URLs below.
+  site-url: https://pawpxtrol.github.io/emu430/
+  repo-url: https://github.com/pawpxtrol/emu430
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: data.qmd
+        text: Data
+      - href: analysis.qmd
+        text: Analysis
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-fold: true
+    code-tools: true
+    link-external-newwindow: true
+
+execute:
+  echo: true
+  warning: false
+  message: false
+
+lang: en

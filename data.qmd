@@ -1,0 +1,71 @@
+---
+title: "Data"
+---
+
+## What this dataset is
+
+The workbook **`hayvan_besleme_2024_07.xlsx`** contains **July 2024** records of **street animal feeding** (`hayvan besleme`) associated with the **Ankara Provincial Health Directorate** animal-feeding reporting (Turkish: *Ankara İl Sağlık Müdürlüğü*, Sağlık Dairesi / ilçe sağlık operations — **replace this sentence with the exact portal or announcement URL you used**).
+
+**Why we chose it:** It is real, public operational data, **Turkey-relevant**, large enough for EDA (**367** rows), and it connects to **urban policy** and **animal welfare** logistics.
+
+**Objectives (data-focused):** Publish a fully reproducible import and cleaning pipeline; distribute a single cleaned object **`feeding`** as **`feeding_clean.RData`**.
+
+## Accomplishments (final deliverable — Data page)
+
+The course asks you to **discuss accomplishments** on the Data page. Update this list before submission so it matches what you actually did:
+
+- Published a **documented, reproducible** path from the raw **`.xlsx`** to a single analysis-ready object **`feeding`** saved as **`feeding_clean.RData`**.
+- **Standardized** district and neighborhood labels (trimmed stray spaces) so counts by `ilce` are trustworthy.
+- **Parsed** text-encoded dry-food amounts into numeric **`mama_kg`**, and normalized **vehicle** / **personnel** fields (including **`Y3` → 3** and **`-` → missing**).
+- **Did not drop rows** for missing vehicle/personnel; all **367** raw rows remain in **`feeding`** so graders can reconcile with the spreadsheet. (If you later choose to exclude rows for a robustness check, describe that in a separate subsection and justify it.)
+
+## Source and citation
+
+1. **Edit this paragraph** with the precise download link, page title, and **access date**.
+2. If the file came from an open-data portal, cite that portal’s recommended attribution.
+
+## Download cleaned data (course requirement)
+
+After you run `Rscript R/prepare_data.R` and render the site, the file is copied into the website output:
+
+**[feeding_clean.RData](data/feeding_clean.RData)** — cleaned tibble `feeding` (see column definitions below).
+
+*(If the link 404s locally, run `quarto render` once after generating `data/feeding_clean.RData`.)*
+
+## Import and preparation
+
+**Raw file location in this repository:** `data/raw/hayvan_besleme_2024_07.xlsx` (copy from your Downloads if missing).
+
+**Steps (mirrors `R/prepare_data.R`):**
+
+1. **Read** the Excel sheet with fixed column types (date + text + numeric) so Turkish headers do not depend on `janitor` transliteration.
+2. **Rename** columns to ASCII snake_case: `tarih`, `ilce`, `mahalle_sokak`, `besleme_noktasi_sayisi`, `mama_text`, `arac_text`, `personel_text`.
+3. **Trim** extra spaces in `ilce` and `mahalle_sokak` (the raw file contains values like `"GÖLBAŞI "` with a trailing space).
+4. **Parse food mass:** extract numeric **kg** from strings such as `"84 KG"` → `mama_kg`.
+5. **Parse vehicles:** `"-"` → missing; `"Y3"` (typo) → **3**; otherwise parse as number.
+6. **Parse personnel:** `"-"` → missing; otherwise parse as number.
+7. **Save** `feeding` to `data/feeding_clean.RData`.
+
+```{r}
+#| label: show-prepare
+#| eval: false
+
+# Run in terminal from project root (not inside Quarto usually):
+# Rscript R/prepare_data.R
+```
+
+## Column dictionary (`feeding`)
+
+| Column | Description |
+|--------|-------------|
+| `tarih` | Calendar date of the record (July 2024). |
+| `ilce` | Ankara **district** (*ilçe*). |
+| `mahalle_sokak` | Neighborhood / street (*mahalle / sokak*). |
+| `besleme_noktasi_sayisi` | Count of **feeding points** that day in that row’s scope. |
+| `mama_kg` | **Average daily dry food** at those points, in **kg** (parsed from text). |
+| `arac_sayisi` | **Vehicles** involved in feeding operations (daily average field in source; see Analysis for variability). |
+| `personel_sayisi` | **Personnel** count field from the sheet. |
+
+## AI use disclosure (if applicable)
+
+If any **wording** on this page was drafted with an AI assistant, **mark that paragraph** and add a **footnote with the prompt** (course rule). Verify all statements against the raw file.

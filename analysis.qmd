@@ -1,0 +1,144 @@
+---
+title: "Analysis"
+---
+
+## Key takeaways
+
+- **Topic:** July **2024** **street-animal feeding** operations across **Ankara ilçeler**, from health-directorate-style operational records.
+- **Data:** **367** neighborhood-day records with feeding-point counts and **kg/day** dry food averages, plus vehicle and personnel fields.
+- **Important aspects:** **District names** needed trimming; **food** was text-encoded; **vehicle** column mixes numbers, `"-"`, and a **`Y3`** typo.
+- **Interesting results:** **Çankaya**, **Keçiören**, and **Mamak** dominate row counts; **kg/day per record** is right-skewed with a long tail of large feeding averages.
+- **Main outcome:** Clear **district comparisons** and **temporal coverage** (26 distinct calendar days in July) support a discussion of **resource concentration** and **data quality** for policy narratives.
+
+```{r}
+#| label: setup
+#| include: false
+
+library(ggplot2)
+library(dplyr)
+library(scales)
+library(lubridate)
+library(here)
+
+load(here::here("data", "feeding_clean.RData"))
+```
+
+## Coverage in time and space
+
+```{r}
+#| label: tbl-summary
+
+feeding |>
+  summarise(
+    rows = n(),
+    first_day = min(tarih, na.rm = TRUE),
+    last_day = max(tarih, na.rm = TRUE),
+    distinct_days = n_distinct(as.Date(tarih)),
+    distinct_ilce = n_distinct(ilce),
+    missing_mama = sum(is.na(mama_kg)),
+    missing_arac = sum(is.na(arac_sayisi)),
+    missing_personel = sum(is.na(personel_sayisi))
+  ) |>
+  knitr::kable(caption = "Dataset coverage and missingness")
+```
+
+The source table does not always include **every calendar day** in July (`distinct_days` \< 31). That is a **reporting / data collection** feature to mention in your presentation, not something we impute.
+
+## District activity (row counts)
+
+```{r}
+#| label: fig-rows-ilce
+#| fig-cap: "Number of neighborhood-day records per district (ilçe)."
+
+ilce_counts <- feeding |>
+  count(ilce, name = "rows") |>
+  mutate(ilce = stats::reorder(factor(ilce), rows))
+
+ggplot(ilce_counts, aes(x = ilce, y = rows)) +
+  geom_col(fill = "#2E86AB") +
+  coord_flip() +
+  labs(x = NULL, y = "Rows (mahalle × day)") +
+  theme_minimal(base_size = 12) +
+  theme(panel.grid.major.y = element_blank())
+```
+
+## Distribution of dry food (kg/day)
+
+```{r}
+#| label: fig-mama-hist
+#| fig-cap: "Histogram of parsed average dry food (kg/day) per record."
+
+ggplot(feeding, aes(x = mama_kg)) +
+  geom_histogram(fill = "#A23B72", color = "white", bins = 30, boundary = 0) +
+  labs(x = "kg/day (parsed)", y = "Count") +
+  theme_minimal(base_size = 12)
+```
+
+## District comparison of kg/day
+
+```{r}
+#| label: fig-mama-ilce
+#| fig-cap: "Distribution of kg/day by district for districts with at least 15 records."
+
+big_ilce <- feeding |>
+  count(ilce) |>
+  filter(n >= 15) |>
+  pull(ilce)
+
+feeding_sub <- feeding |>
+  filter(ilce %in% big_ilce) |>
+  mutate(ilce = stats::reorder(factor(ilce), mama_kg, FUN = median, na.rm = TRUE))
+
+ggplot(feeding_sub, aes(x = ilce, y = mama_kg)) +
+  geom_boxplot(outlier.alpha = 0.35, fill = "#F18F01") +
+  coord_flip() +
+  scale_y_continuous(labels = label_number(suffix = " kg")) +
+  labs(x = NULL, y = "Average dry food (kg/day)") +
+  theme_minimal(base_size = 12)
+```
+
+## Vehicles and personnel
+
+These columns were **mostly constant** in the July extract (many rows share the same small integers), with **`"-"` coded gaps**. Your write-up should interpret them cautiously: they may reflect **fleet / staffing assumptions** in reporting rather than precise daily counts.
+
+```{r}
+#| label: tbl-staff
+
+feeding |>
+  summarise(
+    arac_distinct = n_distinct(arac_sayisi, na.rm = TRUE),
+    personel_distinct = n_distinct(personel_sayisi, na.rm = TRUE),
+    share_arac_missing = mean(is.na(arac_sayisi)),
+    share_personel_missing = mean(is.na(personel_sayisi))
+  ) |>
+  knitr::kable(digits = 3)
+```
+
+## Observations per day
+
+```{r}
+#| label: fig-by-day
+#| fig-cap: "Number of records per calendar day."
+
+daily <- feeding |>
+  mutate(day = as.Date(tarih)) |>
+  count(day, name = "rows")
+
+ggplot(daily, aes(x = day, y = rows)) +
+  geom_line(color = "#C73E1D", linewidth = 0.8) +
+  geom_point(color = "#C73E1D", size = 2) +
+  scale_x_date(date_labels = "%d %b", date_breaks = "3 days") +
+  labs(x = NULL, y = "Rows per day") +
+  theme_minimal(base_size = 12) +
+  theme(axis.text.x = element_text(angle = 35, hjust = 1))
+```
+
+## Conclusions (for your narrative)
+
+- **Spatial concentration:** A few districts account for most neighborhood-day rows — tie this to population, urban form, or program emphasis **only as hypotheses** unless you merge external data.
+- **Skewed feeding amounts:** A long right tail suggests a mix of **small local drops** and **larger consolidated deliveries**; outliers deserve qualitative mention.
+- **Operational fields:** Vehicle/personnel columns are **sparse / low-variance**; do not over-claim precision.
+
+## AI use disclosure (if applicable)
+
+If you extend this analysis with AI-generated text, **label it** and add the **prompt in a footnote**; validate all numeric statements against the `feeding` object.
