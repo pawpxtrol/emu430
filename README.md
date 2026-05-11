@@ -110,11 +110,13 @@ Empty new repo has no `main` yet — a normal **`git push -u origin main`** afte
 
 ## GitHub Pages (automated)
 
-Workflow: `.github/workflows/publish-quarto.yml`
+Workflow: `.github/workflows/publish-quarto.yml` — renders with **Quarto + R**, uploads **`_site`**, deploys with **GitHub Pages (Actions)** (no `gh-pages` branch required).
 
-1. Push this project to the **`main`** branch of your team repo.
-2. In GitHub: **Settings → Pages → Build and deployment → Branch `gh-pages` / root** (the `quarto publish` action creates/updates `gh-pages`).
-3. First push may require **Settings → Actions → General → Workflow permissions: Read and write**.
+1. Push to **`main`** (or run **Actions → Publish Quarto site → Run workflow**).
+2. **Settings → Pages → Build and deployment → Source:** choose **GitHub Actions** (not “Deploy from a branch”). Save if prompted.
+3. After a **green** workflow run, the site URL is shown on the workflow summary and at **Settings → Pages** (e.g. **`https://pawpxtrol.github.io/emu430/`**).
+
+If the first deploy fails, open the failed job log; common fixes: ensure **Pages** source is **GitHub Actions**, and re-run the workflow.
 
 ## HADI submission (PDF)
 
