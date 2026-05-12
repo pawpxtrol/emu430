@@ -155,6 +155,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#team-paw-patrol" id="toc-team-paw-patrol" class="nav-link active" data-scroll-target="#team-paw-patrol">Team — Paw Patrol</a></li>
+  <li><a href="#downloads" id="toc-downloads" class="nav-link" data-scroll-target="#downloads">Downloads</a></li>
   <li><a href="#project-summary" id="toc-project-summary" class="nav-link" data-scroll-target="#project-summary">Project summary</a></li>
   <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key takeaways</a></li>
   </ul>
@@ -211,6 +212,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
+</section>
+<section id="downloads" class="level2">
+<h2 class="anchored" data-anchor-id="downloads">Downloads</h2>
+<ul>
+<li><strong><a href="report.docx">Word report (<code>report.docx</code>)</a></strong> — full reproducible printout of the project (Home + Data + Analysis), regenerated on every push.</li>
+<li><strong><a href="data/feeding_clean.RData">Cleaned dataset (<code>feeding_clean.RData</code>)</a></strong> — R object <code>feeding</code>.</li>
+</ul>
 </section>
 <section id="project-summary" class="level2">
 <h2 class="anchored" data-anchor-id="project-summary">Project summary</h2>
@@ -703,20 +711,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Eren Can Gökçe <span class="pp">|</span> <span class="co">[</span><span class="ot">gokceeren20-ctrl</span><span class="co">](https://github.com/gokceeren20-ctrl)</span> <span class="pp">|</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Ali Mneimne <span class="pp">|</span> <span class="co">[</span><span class="ot">alimn03</span><span class="co">](https://github.com/alimn03)</span> <span class="pp">|</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Project summary</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Downloads</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>This project analyzes **a year of street-animal feeding activity** (**July 2024 – June 2025**) published monthly by **Ankara Büyükşehir Belediyesi Sağlık Dairesi**. For each neighborhood-day across Ankara's districts, the source records how many **feeding points** operated, the **average daily dry food** distributed (kg), and the **vehicle** and **personnel** staffing used.</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>We combine **eleven monthly workbooks** into one tidy dataset to enable district-level and time-series comparisons.</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>**Objectives:** (1) describe spatial and temporal patterns; (2) compare districts in terms of feeding intensity; (3) highlight data-quality issues (mixed date formats, coded missings, typos) for transparent reporting.</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Key takeaways</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Topic:** Municipal **street-animal (“sokak hayvanı”) feeding** logistics in **Greater Ankara** over **a full year** (**Jul 2024 – Jun 2025**), from official Sağlık Dairesi operational records.</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Data:** ~3,700+ neighborhood-day rows aggregated from **11 monthly Excel workbooks**, with `ilçe`, `mahalle/sokak`, feeding-point counts, **kg/day** of dry food, and **vehicle / personnel** staffing.</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Important aspects:** **Mixed date formats** across months (some Excel-typed, some Turkish DMY strings like `"1.03.2025"`); food amounts as `"84 KG"`; vehicle field includes `"-"` (missing) and one typo **`Y3`** → <span class="in">`3`</span>.</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Interesting results:** A few districts (**Çankaya**, **Keçiören**, **Mamak**) dominate reported activity; **monthly kg totals** fluctuate clearly across the year; the kg-per-record distribution has a long right tail (consolidated bulk feedings).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[Word report (`report.docx`)](report.docx)** — full reproducible printout of the project (Home + Data + Analysis), regenerated on every push.</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**[Cleaned dataset (`feeding_clean.RData`)](data/feeding_clean.RData)** — R object <span class="in">`feeding`</span>.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## Project summary</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>This project analyzes **a year of street-animal feeding activity** (**July 2024 – June 2025**) published monthly by **Ankara Büyükşehir Belediyesi Sağlık Dairesi**. For each neighborhood-day across Ankara's districts, the source records how many **feeding points** operated, the **average daily dry food** distributed (kg), and the **vehicle** and **personnel** staffing used.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>We combine **eleven monthly workbooks** into one tidy dataset to enable district-level and time-series comparisons.</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>**Objectives:** (1) describe spatial and temporal patterns; (2) compare districts in terms of feeding intensity; (3) highlight data-quality issues (mixed date formats, coded missings, typos) for transparent reporting.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## Key takeaways</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Topic:** Municipal **street-animal (“sokak hayvanı”) feeding** logistics in **Greater Ankara** over **a full year** (**Jul 2024 – Jun 2025**), from official Sağlık Dairesi operational records.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Data:** ~3,700+ neighborhood-day rows aggregated from **11 monthly Excel workbooks**, with `ilçe`, `mahalle/sokak`, feeding-point counts, **kg/day** of dry food, and **vehicle / personnel** staffing.</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Important aspects:** **Mixed date formats** across months (some Excel-typed, some Turkish DMY strings like `"1.03.2025"`); food amounts as `"84 KG"`; vehicle field includes `"-"` (missing) and one typo **`Y3`** → <span class="in">`3`</span>.</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Interesting results:** A few districts (**Çankaya**, **Keçiören**, **Mamak**) dominate reported activity; **monthly kg totals** fluctuate clearly across the year; the kg-per-record distribution has a long right tail (consolidated bulk feedings).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
