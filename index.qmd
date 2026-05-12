@@ -12,6 +12,11 @@ subtitle: "EMU430 — Team Paw Patrol"
 | Eren Can Gökçe | [gokceeren20-ctrl](https://github.com/gokceeren20-ctrl) |
 | Ali Mneimne | [alimn03](https://github.com/alimn03) |
 
+## Downloads
+
+- **[Word report (`report.docx`)](report.docx)** — full reproducible printout of the project (Home + Data + Analysis), regenerated on every push.
+- **[Cleaned dataset (`feeding_clean.RData`)](data/feeding_clean.RData)** — R object `feeding`.
+
 ## Project summary
 
 This project analyzes **a year of street-animal feeding activity** (**July 2024 – June 2025**) published monthly by **Ankara Büyükşehir Belediyesi Sağlık Dairesi**. For each neighborhood-day across Ankara's districts, the source records how many **feeding points** operated, the **average daily dry food** distributed (kg), and the **vehicle** and **personnel** staffing used.

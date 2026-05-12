@@ -62,6 +62,25 @@ jobs:
           ls _site/
           test -f _site/index.html || (echo "ERROR: _site/index.html missing" && exit 1)
 
+      - name: Render Word report (report.docx)
+        run: quarto render report.qmd --to docx --no-cache
+
+      - name: Verify report.docx
+        run: |
+          ls -la report.docx
+          test -f report.docx || (echo "ERROR: report.docx missing" && exit 1)
+
+      - name: Upload report.docx as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-docx
+          path: report.docx
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Stage report.docx for gh-pages download link
+        run: cp report.docx _site/report.docx
+
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
