@@ -1,6 +1,12 @@
 project:
   type: website
   output-dir: _site
+  # Only build the website pages by default. report.qmd is rendered
+  # explicitly to docx via:  quarto render report.qmd --to docx
+  render:
+    - index.qmd
+    - data.qmd
+    - analysis.qmd
   resources:
     - data/feeding_clean.RData
 
