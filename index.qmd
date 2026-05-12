@@ -7,7 +7,7 @@ subtitle: "EMU430 — Team Paw Patrol"
 
 | Name | Role | GitHub |
 |------|------|----------|
-| **[YOUR NAME]** | Team lead | [@pawpxtroller](https://github.com/pawpxtroller) |
+| **Ujal Mustafayev** | Team lead | [@pawpxtroller](https://github.com/pawpxtroller) |
 | **Sudenaz Usta** | | [@sudenazusta](https://github.com/sudenazusta) |
 | **Gökçe Eren** | | [@gokceeren20-ctrl](https://github.com/gokceeren20-ctrl) |
 
