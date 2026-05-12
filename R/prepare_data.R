@@ -26,7 +26,8 @@ if (length(files) == 0) {
 
 message("Found ", length(files), " monthly Excel file(s).")
 
-# Parse date cells that arrive as plain text (Excel serials, DMY strings, ISO, …).
+# Custom project helper (not part of base R or lubridate). Parses date cells
+# that arrive as plain text (Excel serials, DMY strings, ISO, …).
 parse_date_from_text <- function(s) {
   s <- str_squish(as.character(s))
   n <- length(s)
