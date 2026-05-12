@@ -8,7 +8,6 @@ title: "Analysis"
 - **Data:** ~3,700+ neighborhood-day records aggregated from **11 monthly workbooks**, with feeding-point counts, **kg/day** of dry food, and vehicle / personnel staffing.
 - **Important aspects:** District names needed trimming; food / dates / staff fields were **text-encoded** with inconsistent formats (March 2025 dates as `"1.03.2025"`, vehicles as `"-"` or the typo `"Y3"`).
 - **Interesting results:** A handful of districts (notably **Çankaya**, **Keçiören**, **Mamak**) dominate row counts; **monthly totals fluctuate**, and the kg-per-record distribution is **right-skewed** with consolidated large drops in the tail.
-- **Main outcome:** A reproducible **Quarto + R** pipeline plus a publicly downloadable cleaned `.RData` enabling year-scale district comparisons and discussion of **resource concentration and data quality** in municipal animal-welfare operations.
 
 ```{r}
 #| label: setup
@@ -62,7 +61,9 @@ How many records per month, and how much dry food (kg) was reported per month?
 
 ```{r}
 #| label: fig-monthly
-#| fig-cap: "Records per month and total reported kg of dry food per month."
+#| fig-cap: 
+#|   - "Records per month."
+#|   - "Total reported dry food (kg) per month."
 #| fig-height: 6
 
 monthly <- feeding_ts |>
@@ -229,7 +230,7 @@ ops |>
   theme_minimal(base_size = 12)
 ```
 
-**Honest caveat.** As Table 2 (below) shows, `personel_sayisi` and `arac_sayisi` have **only one distinct value** across the entire 11-month dataset — i.e. every record was filed with the same fleet/staffing snapshot. That means the *ranking* in Figure 8 is identical to a raw `total_kg` ranking; what changes is only the **absolute scale** (kg per *one* unit of resource). With finer-grained daily staff/vehicle counts, the same code would reveal true efficiency gaps — a Yenimahalle-with-9-staff-moving-3kg vs. Keçiören-with-9-staff-moving-200kg comparison.
+**Honest caveat.** `personel_sayisi` and `arac_sayisi` have **only one distinct value** across the entire 11-month dataset — i.e. every record was filed with the same fleet/staffing snapshot. That means the *ranking* in the figure above is identical to a raw `total_kg` ranking; what changes is only the **absolute scale** (kg per *one* unit of resource). With finer-grained daily staff/vehicle counts, the same code would reveal true efficiency gaps — a Yenimahalle-with-9-staff-moving-3kg vs. Keçiören-with-9-staff-moving-200kg comparison.
 
 ## Load per feeding point
 
@@ -313,7 +314,9 @@ In this dataset the x-axis collapses to a single value, so the "linear-correlati
 
 ```{r}
 #| label: fig-weekday
-#| fig-cap: "Records per weekday and median kg per record by weekday (Monday = 1)."
+#| fig-cap: 
+#|   - "Records per weekday (Monday → Sunday)."
+#|   - "Median dry food (kg) per record by weekday (Monday → Sunday)."
 #| fig-height: 5
 
 wday_lbl <- c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
@@ -364,23 +367,6 @@ feeding_ts |>
 
 A **high CV** (e.g. `sd / mean > 1`) suggests big fluctuations from day to day — likely consolidated bulk deliveries rather than a smooth daily schedule. A **low CV** suggests a routine flat operation.
 
-## Vehicles and personnel
-
-These columns are **low-variance** (often constant within a month) and frequently use `"-"` for missing values, so they describe *fleet / staffing assumptions* more than precise daily counts.
-
-```{r}
-#| label: tbl-staff
-
-feeding |>
-  summarise(
-    arac_distinct          = n_distinct(arac_sayisi, na.rm = TRUE),
-    personel_distinct      = n_distinct(personel_sayisi, na.rm = TRUE),
-    share_arac_missing     = mean(is.na(arac_sayisi)),
-    share_personel_missing = mean(is.na(personel_sayisi))
-  ) |>
-  knitr::kable(digits = 3, caption = "Vehicle and personnel coverage")
-```
-
 ## Observations per day
 
 ```{r}
@@ -415,4 +401,4 @@ ggplot(daily, aes(x = day, y = rows)) +
 
 ## AI use disclosure
 
-If you extend this analysis with AI-generated text, **label that section** and include the **prompt as a footnote**; validate every numeric statement against the `feeding` object.
+AI assisted with some of the code.

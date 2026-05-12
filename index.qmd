@@ -7,32 +7,21 @@ subtitle: "EMU430 — Team Paw Patrol"
 
 | Name | Role | GitHub |
 |------|------|----------|
-| **pawpxtroller** | Team lead | [@pawpxtroller](https://github.com/pawpxtroller) |
+| **[YOUR NAME]** | Team lead | [@pawpxtroller](https://github.com/pawpxtroller) |
 | **Sudenaz Usta** | | [@sudenazusta](https://github.com/sudenazusta) |
 | **Gökçe Eren** | | [@gokceeren20-ctrl](https://github.com/gokceeren20-ctrl) |
 
-*Teams are typically **4–6** students: add or remove rows so every member has a **working link** to their **Assignment 1** GitHub profile (final deliverable PDF). Replace placeholders when accounts exist.*
-
-**GitHub site URLs:** `_quarto.yml` uses org **`pawpxtrol`**, repo **`emu430`** → **`https://pawpxtrol.github.io/emu430/`**. If you rename the repo, update **both** URLs in `_quarto.yml`.
-
 ## Project summary
 
-This project analyzes **a year of street-animal feeding activity** (**July 2024 – June 2025**) published monthly by the **Ankara Provincial Health Directorate** (`Ankara İl Sağlık Müdürlüğü`). For each neighborhood-day across Ankara's districts, the source records how many **feeding points** operated, the **average daily dry food** distributed (kg), and the **vehicle** and **personnel** staffing used.
+This project analyzes **a year of street-animal feeding activity** (**July 2024 – June 2025**) published monthly by **Ankara Büyükşehir Belediyesi Sağlık Dairesi**. For each neighborhood-day across Ankara's districts, the source records how many **feeding points** operated, the **average daily dry food** distributed (kg), and the **vehicle** and **personnel** staffing used.
 
 We combine **eleven monthly workbooks** into one tidy dataset to enable district-level and time-series comparisons.
 
 **Objectives:** (1) describe spatial and temporal patterns; (2) compare districts in terms of feeding intensity; (3) highlight data-quality issues (mixed date formats, coded missings, typos) for transparent reporting.
 
-## Link to course menu
-
-Add a short description and a link **from your personal EMU430 coursework page** to this project site (see course PDF).
-
----
-
 ## Key takeaways
 
-- **Topic:** Municipal **street-animal (“sokak hayvanı”) feeding** logistics in **Greater Ankara** over **a full year** (**Jul 2024 – Jun 2025**), from official health-directorate operational records.
+- **Topic:** Municipal **street-animal (“sokak hayvanı”) feeding** logistics in **Greater Ankara** over **a full year** (**Jul 2024 – Jun 2025**), from official Sağlık Dairesi operational records.
 - **Data:** ~3,700+ neighborhood-day rows aggregated from **11 monthly Excel workbooks**, with `ilçe`, `mahalle/sokak`, feeding-point counts, **kg/day** of dry food, and **vehicle / personnel** staffing.
 - **Important aspects:** **Mixed date formats** across months (some Excel-typed, some Turkish DMY strings like `"1.03.2025"`); food amounts as `"84 KG"`; vehicle field includes `"-"` (missing) and one typo **`Y3`** → `3`.
 - **Interesting results:** A few districts (**Çankaya**, **Keçiören**, **Mamak**) dominate reported activity; **monthly kg totals** fluctuate clearly across the year; the kg-per-record distribution has a long right tail (consolidated bulk feedings).
-- **Main outcome:** A reproducible **Quarto + R** pipeline plus a publicly downloadable **`feeding_clean.RData`**, ready for the **GitHub Pages** presentation and **HADI** PDF submission.

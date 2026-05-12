@@ -4,7 +4,7 @@ title: "Data"
 
 ## What this dataset is
 
-This site analyzes **monthly street-animal feeding (`hayvan besleme`) records** from the **Ankara Provincial Health Directorate** (Turkish: *Ankara İl Sağlık Müdürlüğü*, Sağlık Dairesi). Each row is one **neighborhood-day** of operations across Ankara's districts (*ilçeler*).
+This site analyzes **monthly street-animal feeding (`hayvan besleme`) records** from **Ankara Büyükşehir Belediyesi Sağlık Dairesi**. Each row is one **neighborhood-day** of operations across Ankara's districts (*ilçeler*).
 
 We combined **eleven monthly Excel workbooks** spanning **July 2024 through June 2025** into a single tidy dataset:
 
@@ -31,7 +31,7 @@ We combined **eleven monthly Excel workbooks** spanning **July 2024 through June
 
 ## Source and citation
 
-The raw files are monthly publications from **Ankara Büyükşehir Belediyesi Sağlık Dairesi** ("Sağlık Dairesi Hayvan Besleme Verileri"). Replace this sentence on the deployed site with the **exact open-data portal URL** + **access date** before the final submission.
+The raw files are monthly publications from **Ankara Büyükşehir Belediyesi Sağlık Dairesi** (“Sağlık Dairesi Hayvan Besleme Verileri”). The files are shared on the belediye website **<https://seffaf.ankara.bel.tr/>**.
 
 ## Download cleaned data (course requirement)
 
@@ -87,4 +87,4 @@ After `Rscript R/prepare_data.R` and `quarto render`, the cleaned dataset is cop
 
 ## AI use disclosure
 
-If you extend any wording on this page with an AI assistant, **mark that paragraph** and add a **footnote with the prompt** (course ethics rule). Verify every quantitative statement against the `feeding` object.
+We used AI to refine the flow and clarity of our text.
